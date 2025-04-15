@@ -98,6 +98,9 @@ Route::post(':version/datasync/synchouse','api/:version.datasync/synchouse');
 Route::post(':version/datasync/househistory','api/:version.datasync/househistory');
 Route::post(':version/datasync/synchousehistory','api/:version.datasync/synchousehistory');
 
+// 一手房成交信息
+Route::get(':version/house/houseDay','api/:version.house/houseDay');
+Route::get(':version/house/houseMonth','api/:version.house/houseMonth');
 // //
 // ////资源路由，详情查看tp手册资源路由
 // //Route::resource(':version/member','api/:version.member');
