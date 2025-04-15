@@ -1,0 +1,11 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('label', 'text', ['label' => 'Label', 'verify' => 'required'], '')}
+{:Form::input('value', 'text', ['label' => 'Value', 'verify' => ''], '')}
+{:Form::input('key', 'text', ['label' => 'Key', 'verify' => 'required'], '')}
+{:Form::input('old_key', 'text', ['label' => 'OldKey', 'verify' => ''], '')}
+{:Form::input('acive', 'text', ['label' => 'Acive', 'verify' => ''], '0')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+
+    {:Form::submit()}
+</form>
+

@@ -1,0 +1,28 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('sellers', 'text', ['label' => 'Sellers', 'verify' => ''], '')}
+{:Form::input('building_name', 'text', ['label' => 'BuildingName', 'verify' => 'required'], '')}
+{:Form::input('building_branch', 'text', ['label' => 'BuildingBranch', 'verify' => ''], '')}
+{:Form::input('floor', 'text', ['label' => 'Floor', 'verify' => 'required'], '')}
+{:Form::input('house_nb', 'text', ['label' => 'HouseNb', 'verify' => 'required'], '')}
+{:Form::input('usage', 'text', ['label' => 'Usage', 'verify' => 'required'], '')}
+{:Form::input('ys_inside_area', 'number', ['label' => 'YsInsideArea', 'verify' => ''], '')}
+{:Form::input('ys_expand_area', 'number', ['label' => 'YsExpandArea', 'verify' => ''], '')}
+{:Form::input('ys_building_area', 'number', ['label' => 'YsBuildingArea', 'verify' => ''], '')}
+{:Form::input('jg_inside_area', 'number', ['label' => 'JgInsideArea', 'verify' => ''], '')}
+{:Form::input('jg_expand_area', 'number', ['label' => 'JgExpandArea', 'verify' => ''], '')}
+{:Form::input('jg_building_area', 'number', ['label' => 'JgBuildingArea', 'verify' => ''], '')}
+{:Form::input('ask_price_each_b', 'number', ['label' => 'AskPriceEachB', 'verify' => ''], '')}
+{:Form::input('sf3_ask_price_each_b', 'number', ['label' => '首付三成', 'verify' => ''], '')}
+{:Form::input('sf4_ask_price_each_b', 'number', ['label' => '首付四成', 'verify' => ''], '')}
+{:Form::input('ask_price_total_b', 'number', ['label' => 'AskPriceTotalB', 'verify' => ''], '')}
+{:Form::color('color',['label' => 'Color', 'verify' => '', 'search' => 1])}
+{:Form::input('last_status_name', 'text', ['label' => 'LastStatusName', 'verify' => ''], '')}
+{:Form::input('str_contract_id', 'text', ['label' => 'StrContractId', 'verify' => ''], '')}
+{:Form::input('pre_sellId', 'number', ['label' => 'PreSellId', 'verify' => 'required'], '')}
+{:Form::input('fybId', 'number', ['label' => 'FybId', 'verify' => 'required'], '')}
+{:Form::input('ysProjectId', 'number', ['label' => 'YsProjectId', 'verify' => 'required'], '')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+
+    {:Form::submit()}
+</form>
+

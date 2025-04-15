@@ -1,0 +1,10 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('title', 'text', ['label' => 'Title', 'verify' => 'required'], '')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+{:Form::input('preSellId', 'number', ['label' => 'PreSellId', 'verify' => ''], '')}
+{:Form::input('fybId', 'number', ['label' => 'FybId', 'verify' => ''], '')}
+{:Form::input('ysProjectId', 'number', ['label' => 'YsProjectId', 'verify' => ''], '')}
+
+    {:Form::submit()}
+</form>
+

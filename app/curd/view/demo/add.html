@@ -1,0 +1,37 @@
+<form class="layui-form" lay-filter="form">
+      {:Form::selectpage('group_id',[],['url'=>'demo/member','field'=>'username','multiple'=>true,'verify'=>'required'],1)}
+      {:Form::xmselect('member_id',[],['url'=>__u('demo/member'),'label' => 'member','remotesearch'=>1, 'verify'=>'required','radio'=>1],['username','id'],)}
+      {:Form::city('citys', ['label' => 'citys', 'verify'=>'required'])}
+      {:Form::selectcx(['province_id','city_id','area_id'],[], ['url'=>__u('getcitys'),'label' => 'citys', 'verify'=>'required'],'',$formData?$formData['province_id'].','.$formData['city_id'].','.$formData['area_id']:'')}
+      {:Form::selects('mystate',$mystateList, ['label' => '复选', 'multiple'=>1,'verify'=>'required'],'','1,2')}
+      {:Form::select('mystate2',$mystateList, ['label' => '单选','verify'=>'require1'],'','2')}
+      {:Form::rate('rate', ['label' => 'rate', 'verify'=>'required'])}
+      {:Form::slider('slider', ['label' => 'slider', 'verify'=>'required'])}
+      {:Form::upload('attach_file', ['label' => 'AttachFile', 'verify'=>'require1', 'type' => 'radio', 'mime' => 'file', 'path' =>'my', 'num' => '1'])}
+      {:Form::upload('attach_file', ['select'=>"upload-choose",'label' => 'AttachFile', 'verify'=>'require1', 'type' => 'radio', 'mime' => 'file', 'path' =>'my', 'num' => '1'])}
+      {:Form::upload('attach_files',  ['label' => 'AttachFiles', 'verify'=>'require1', 'type' => 'checkbox', 'mime' => 'file', 'path' => 'my', 'num' => '*'])}
+      {:Form::select('cate_id',$cateIdList, ['label' => 'CateId', 'verify'=>'required', 'search' => 1], [], '')}
+      {:Form::selects('cate_ids',$cateIdList, ['label' => 'CateIds','multiple'=>'1','verify'=>'required'],'', $formData?$formData['cate_ids']:'')}
+      {:Form::editor('description',['label'=>'Description','verify' => 'required'])}
+      {:Form::editor('editor_content',['label'=>'EditorContent','verify' => ''])}
+      {:Form::upload('image',['label' => 'Image', 'verify'=>'require1', 'type' => 'radio', 'mime' => 'image', 'path' => 'demo', 'num' => '1'])}
+      {:Form::upload('images', ['label' => 'Images', 'verify'=>'require1', 'type' => 'checkbox', 'mime' => 'image', 'path' =>'demo', 'num' => '*'])}
+      {:Form::input('keywords', 'text', ['label' => 'Keywords', 'verify'=>'required'], '')}
+      {:Form::tags('keywords', ['label' => 'Keywords', 'verify'=>'required'], '')}
+      {:Form::radio('open_switch' ,$openSwitchList, ['label' => 'OpenSwitch', 'verify'=>'required'], '0')}
+      {:Form::input('price', 'number', ['label' => 'Price', 'verify'=>'required','step'=>2], '0.00')}
+      {:Form::radio('sexdata' ,$sexdataList, ['label' => 'Sexdata', 'verify'=>'required'], 'secret')}
+      {:Form::date('startdate', ['label' => 'Startdate', 'verify'=>'required', 'type' => 'date'])}
+      {:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify'=>'required'], '1')}
+      {:Form::radio('switch' ,$switchList, ['label' => 'Switch', 'verify'=>'required'], '1')}
+      {:Form::checkbox('my2state', $my2stateList,['label' => 'My2state', 'verify' => 'required'], $formData?$formData['my2state']:'2')}
+      {:Form::checkbox('mystate', $mystateList,['label' => 'Mystate', 'verify'=>'required'], $formData?$formData['mystate']:'1')}
+      {:Form::color('my_color',['label' => 'MyColor', 'verify' => 'required','search' => 1])}
+      {:Form::textarea('textarea', ['label' => 'Textarea', 'verify'=>'required',], '')}
+      {:Form::date('times', ['label' => 'Times', 'verify'=>'required', 'type' => 'time'])}
+      {:Form::date('timestaptime', ['label' => 'Timestaptime', 'verify'=>'required'])}
+      {:Form::date('activitytime', ['label' => 'Activitytime', 'verify'=>'required'])}
+      {:Form::select('week',$weekList, ['label' => 'Week', 'verify'=>'required', 'search' => 1], [], 'monday')}
+      {:Form::date('year', ['label' => 'Year', 'verify'=>'required', 'type' => 'year'])}
+      {:Form::submitbtn()}
+</form>

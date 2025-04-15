@@ -1,0 +1,17 @@
+
+<form class="layui-form" lay-filter="form">
+    {:form_input('wxname','text',['label'=>'微信名','verify'=>'required','tips'=>'WeChatName'])}
+    {:form_input('wx_code','text',['label'=>'微信号','verify'=>'required','tips'=>'WeChatNumber'])}
+    {:form_radio('type' ,$typeList, ['label' => '类型', 'verify' => 'required'], '3')}
+    {:form_input('origin_id','text',['label'=>"原始ID",'verify'=>'required'])}
+    {:form_input('app_id','text',['label'=>"APPID",'verify'=>'required'])}
+    {:form_input('secret','text',['label'=>"APPSECRET",'verify'=>'required'])}
+    {:form_input('token','text',['label'=>"TOKEN",'verify'=>'required'])}
+    {:form_input('aeskey','text',['label'=>"Aeskey",'verify'=>''])}
+    {:form_input('encode','text',['label'=>"Encode",'verify'=>''])}
+    {:form_upload('qr',$formData,['label'=>'Qrcode','path'=>$addon])}
+    {:form_upload('avatar',$formData,['label'=>'avatar','path'=>$addon])}
+    {:form_input('related','text',['label'=>"related",'verify'=>'','readonly'=>'true'],'wechat/related')}
+    {:form_submitbtn()}
+</form>
+

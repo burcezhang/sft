@@ -1,0 +1,182 @@
+<link rel="stylesheet" type="text/css" href="__CDN____STATIC__/wechat/css/menu/index.css?v={:time()}">
+<link rel="stylesheet" type="text/css" href="__CDN____STATIC__/wechat/css/iconfont/iconfont.css?v={:time()}">
+<!-- 主体 S -->
+<div class="content">
+    <div class="con">
+        <div class="layui-wx-msg">
+            <div class="layui-elem-quote">
+                <div>
+                    <span class="layui-icon layui-icon-tips"></span>
+                </div>
+                <div>
+                    <p>菜单编辑中</p>
+                </div>
+            </div>
+        </div>
+        <form class="layui-form">
+            <div class="con-body">
+                <div class="left">
+                    <div>
+                        <div class="mobile-header">
+                            <p class="menu-title">{$account.wxname}</p>
+                        </div>
+                        <div class="menu-keybords">
+                            <ul class="menu-list">
+                                {if $formData && $formData['menu_data']}
+                                {volist name="formData['menu_data']" id="vo"}
+                                <li class="menu-list-view" data-id="{$i-1}" >
+                                    <span class="layui-icon">{$vo.name}</span>
+                                    <ul style="display:block;">
+                                        {if count($vo.sub_button)>0}
+                                            {volist name="vo.sub_button" id="v" key='k'}
+                                            <li class="menu-list-sub" data-id="{$i-1}_{$k-1}">
+                                                <span class="layui-icon">{$v.name}</span>
+                                            </li>
+                                            {/volist}
+                                            {if count($vo.sub_button)<5}
+                                            <li class="menu-list-sub wx-menu-add" data-id="{$i-1}_{:count($vo.sub_button)}">
+                                                <span class="layui-icon layui-icon-close"></span>
+                                            </li>
+                                            {/if}
+                                        {else /}
+                                        <li class="menu-list-sub  wx-menu-add" data-id="{$i-1}_0">
+                                            <span class="layui-icon layui-icon-close"></span>
+                                        </li>
+                                        {/if}
+                                    </ul>
+                                </li>
+                                {/volist}
+                                {if count($formData['menu_data'])<3}
+                                <li class="menu-list-view wx-menu-add" data-id="0">
+                                    <span class="layui-icon layui-icon-close"></span>
+                                </li>
+                                {/if}
+
+                                {else /}
+                                <li class="menu-list-view wx-menu-add" data-id="0">
+                                    <span class="layui-icon layui-icon-close"></span>
+                                </li>
+                                {/if}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <p class="menu-title">
+                        <span>系统帮助</span>
+                        <a href="javascript:;" class="delmenu">删除子菜单</a>
+                    </p>
+                    <div class="layui-form-item">
+                        <p class="menu-title">菜单标题</p>
+                        <div class="layui-input-block" style="margin-left: auto;">
+                            <input type="text" name="menu_name" value="{$formData?$formData.menu_name:'默认菜单'}"  lay-verify="required" placeholder="菜单标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <p class="menu-title">菜单名</p>
+                        <div class="layui-input-block" style="margin-left: auto;">
+                            <input type="text" name="title"  lay-verify="required" placeholder="请输入菜单名" autocomplete="off" class="layui-input">
+                            <span class="layui-input-tips">字数不超过4个汉字或8个字母</span>
+                        </div>
+                    </div>
+                    <form action="" class="layui-form">
+
+                    <div class="layui-form-item media">
+                        <p class="menu-title">菜单事件</p>
+                        <div class="layui-input-block" style="margin-left: auto;">
+                            <div class="layui-tab">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">
+                                        <input type="radio" name="type" lay-filter="type" data-key="" value="click" title="发送消息" checked>
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="" value="view" title="跳转网页">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="" value="miniprogram" title="跳转小程序">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_0_0" value="scancode_waitmsg" title="扫码">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_0_1" value="scancode_push" title="扫码(等待信息) ">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_2_0" value="location_select" title="地理位置">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_1_0" value="pic_sysphoto" title="拍照发图">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_1_1" value="pic_photo_or_album" title="拍照相册">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="type"  lay-filter="type" data-key="rselfmenu_1_2" value="pic_weixin" title="相册发图">
+                                    </li>
+                                </ul>
+                                <div class="layui-tab-content">
+                                    <div class="layui-tab-item layui-show">
+                                        <div style="padding:20px;">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">消息关键字</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="key"  lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <div style="padding:20px;">
+                                            <p style="padding-left:15px;margin-bottom:10px;color:#8d8d8d;">订阅者点击该子菜单会跳到以下链接</p>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">链接地址</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="url"  lay-verify="" placeholder="请输入链接" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <div style="padding:20px;">
+                                            <p style="padding-left:15px;margin-bottom:10px;color:#8d8d8d;">订阅者点击该子菜单会跳到小程序地址</p>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">小程序APPID</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="appid"  placeholder="请输入APPID" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">小程序地址</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="pagepath"  placeholder="请输入页面地址" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-tab-item"></div>
+                                    <div class="layui-tab-item"></div>
+                                    <div class="layui-tab-item"></div>
+                                    <div class="layui-tab-item"></div>
+                                    <div class="layui-tab-item"></div>
+                                    <div class="layui-tab-item"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="wx-menu-left"></span>
+                    <span class="wx-menu-left"></span>
+                    </form>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                {:token_field()}
+                <button type="button" class="layui-btn layui-form-btn" id="save">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var menuList = {:json_encode($formData['menu_data']??[])};
+</script>

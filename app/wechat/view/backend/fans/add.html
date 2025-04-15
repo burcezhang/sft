@@ -1,0 +1,6 @@
+<form class="layui-form" lay-filter="form">
+    {:form_select('tags',$tagsList,['verify'=>'required'],'id,name')}
+    {:form_input('nickname','text',['disabled'=>1])}
+    {:form_submitbtn()}
+</form>
+

@@ -1,0 +1,60 @@
+<style>
+    #content {
+        position: absolute;width: 100%;height: 800px;}
+    #do{position: fixed;top: 165px;right:0;z-index: 999999}
+    .layui-nav{width: 80px;padding:0;display: inline-grid;}
+    .layui-nav.layui-bg-gray .layui-this a{color: #4d70ff}
+    .layui-nav .layui-this:after, .layui-nav-bar{background-color:#fff;}
+</style>
+<form class="layui-form" lay-filter="form">
+    <div class="layui-form-item layui-form-text" id="do">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <ul class="layui-nav layui-bg-gray" lay-filter="">
+                <li class="layui-nav-item layui-this" lay-on="save"><a href="javascript:;">保存</a></li>
+                <li class="layui-nav-item" lay-on="find"><a href="javascript:;">查找</a></li>
+                <li class="layui-nav-item" lay-on="replace"><a href="javascript:;">替换</a></li>
+                <li class="layui-nav-item" lay-on="refresh"><a href="javascript:;">刷新</a></li>
+            </ul>
+        </div>
+    </div>
+    <input type="hidden" id="type" class="layui-input" name="type" {if($formData.content)}value="2" {else /}value="1"{/if}>
+    <div class="layui-form-item layui-hide" >
+         <label class="layui-form-label"></label>
+         <div class="layui-input-block">
+           <input type="text" name="exts" id="ex ts" value="{$formData.exts}" autocomplete="off" class="layui-input">
+         </div>
+       </div>
+
+    <div style="">
+        {if($formData.id)}
+        {:Form::input('id','text',['label'=>'文件名','disabled'=>true,'placeholder'=>'不需要后缀,比如 app/backend/view/index'])}
+        {else /}
+        {:Form::input('id','text',['label'=>'文件名','placeholder'=>'不需要后缀,比如 app/backend/view/index'])}
+        {/if}
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">文件内容</label>
+        <div class="layui-input-block">
+            <div id="content"></div>
+                <textarea name="content" class="layui-hide">
+            </textarea>
+        </div>
+    </div>
+    {:Form::submit()}
+</form>
+<script src="/static/curd/ace-builds/src-min-noconflict/ace.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/theme-monokai.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/ext-beautify.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/ext-searchbox.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/ext-settings_menu.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/ext-spellcheck.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/keybinding-vscode.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-javascript.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-css.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-php.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-sql.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-text.js"></script>
+<script src="/static/curd/ace-builds/src-min-noconflict/mode-json.js"></script>

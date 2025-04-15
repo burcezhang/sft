@@ -1,0 +1,4 @@
+- 按swagger 格式编写注释
+- 在插件管理配置需要的目录,可写多个目录并用逗号分隔v
+- 修改public/swagger目录下index.html  url配置域名 
+- 访问 域名+'addons/swagger' 即可自动生成swagger文档

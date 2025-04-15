@@ -1,0 +1,7 @@
+<form class="layui-form" lay-filter="form">
+    {:form_input('name','text',['verify'=>'required','tips'=>'Between 4 and 25 characters.'])}
+    {:form_radio('type',['临时','永久'],['filter'=>'type'],1)}
+    {:form_input('expire_seconds','text',['tips'=>'临时二维码过期时间, 最大为30天（2592000秒）'])}
+    {:form_submitbtn()}
+</form>
+

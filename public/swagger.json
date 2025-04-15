@@ -1,0 +1,843 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "接口文档",
+        "version": "1.0.1"
+    },
+    "paths": {
+        "/api/v1.index/splash": {
+            "get": {
+                "tags": [
+                    "开屏广告"
+                ],
+                "summary": "开屏广告",
+                "operationId": "9f2c07fc57cd0d8dfc02263c311881a5",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/homedata": {
+            "get": {
+                "tags": [
+                    "首页数据"
+                ],
+                "summary": "首页数据",
+                "operationId": "0320f0f42d1f31e5f2531969905d11e2",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/datacenter": {
+            "get": {
+                "tags": [
+                    "数据中心"
+                ],
+                "summary": "数据中心",
+                "operationId": "07e952a6f37aa8685fcf4edda98f218b",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/stock": {
+            "get": {
+                "tags": [
+                    "板块库存"
+                ],
+                "summary": "板块库存",
+                "operationId": "0c1d2ba35847413bf6547c82617b87c5",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/sales": {
+            "get": {
+                "tags": [
+                    "销售榜单"
+                ],
+                "summary": "销售榜单",
+                "operationId": "9daf81bc80e47c0eb120fe0cc85b6e27",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/daily": {
+            "get": {
+                "tags": [
+                    "深房日报"
+                ],
+                "summary": "深房日报",
+                "operationId": "361163bdde29fee654aa002152743bc6",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/dailydetail": {
+            "get": {
+                "tags": [
+                    "日报详情"
+                ],
+                "summary": "日报详情",
+                "operationId": "8239791767f850da46f6a534d3e9037f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "日报id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/category": {
+            "get": {
+                "tags": [
+                    "最新取证楼盘分类"
+                ],
+                "summary": "最新取证楼盘分类",
+                "operationId": "7a0400f1c91c7a170854e5dade439055",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/getindex": {
+            "get": {
+                "tags": [
+                    "最新取证楼盘"
+                ],
+                "summary": "最新取证楼盘",
+                "operationId": "cb81977a7e23b221afb287d981a93c82",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "query",
+                        "description": "分类label",
+                        "schema": {
+                            "type": "varchar",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页码",
+                        "schema": {
+                            "type": "int",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "每页数量",
+                        "schema": {
+                            "type": "int",
+                            "default": "10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/search": {
+            "get": {
+                "tags": [
+                    "楼盘搜索"
+                ],
+                "summary": "楼盘搜索",
+                "operationId": "402be5c6328e16af9cd0daa445a0f611",
+                "parameters": [
+                    {
+                        "name": "keywords",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页码",
+                        "schema": {
+                            "type": "int",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "每页数量",
+                        "schema": {
+                            "type": "int",
+                            "default": "10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/details": {
+            "post": {
+                "tags": [
+                    "楼盘详情"
+                ],
+                "summary": "楼盘详情",
+                "operationId": "be9994440792ed4dc8f348fd43c940e0",
+                "parameters": [
+                    {
+                        "name": "sype_id",
+                        "in": "query",
+                        "description": "楼盘sype_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "usage",
+                        "in": "query",
+                        "description": "usage（0全部1住宅2商铺）",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/subscribe": {
+            "post": {
+                "tags": [
+                    "楼盘订阅"
+                ],
+                "summary": "楼盘订阅",
+                "operationId": "0d1b6291b9655463ef3faa36cf22a61c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/unsubscribe": {
+            "post": {
+                "tags": [
+                    "取消楼盘订阅"
+                ],
+                "summary": "取消楼盘订阅",
+                "operationId": "706defa03e4e9a2850f28d7dafc09930",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/deeproom": {
+            "get": {
+                "tags": [
+                    "深房指数"
+                ],
+                "summary": "深房指数",
+                "operationId": "19f3bebded137ca39e228ced8ef3e54b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/deeproomrankings": {
+            "get": {
+                "tags": [
+                    "深房指数排行榜"
+                ],
+                "summary": "深房指数排行榜",
+                "operationId": "0f240afdc52438480caad7b838167ca8",
+                "parameters": [
+                    {
+                        "name": "area",
+                        "in": "query",
+                        "description": "位置",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "ranking",
+                        "in": "query",
+                        "description": "1：指数榜，2：销量，3：销售额，4：库存榜",
+                        "schema": {
+                            "type": "int",
+                            "default": "2"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "（'week', 'month', 'quarter', 'year'）",
+                        "schema": {
+                            "type": "string",
+                            "default": "month"
+                        }
+                    },
+                    {
+                        "name": "day",
+                        "in": "query",
+                        "description": "时间(如：'2024-06' 或 '2024-03' 等）",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页码",
+                        "schema": {
+                            "type": "int",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "每页数量",
+                        "schema": {
+                            "type": "int",
+                            "default": "10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/explain": {
+            "get": {
+                "tags": [
+                    "取证均价/取证总价/建面区间"
+                ],
+                "summary": "取证均价/取证总价/建面区间",
+                "operationId": "dd8e6fe38e82f4df81490e3f3b97c65f",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "average_price/total_price/area_section",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/building": {
+            "get": {
+                "tags": [
+                    "楼盘信息"
+                ],
+                "summary": "楼盘信息",
+                "operationId": "eeac147c8f4157279b4a4ef98060c9bb",
+                "parameters": [
+                    {
+                        "name": "sype_id",
+                        "in": "query",
+                        "description": "楼盘sype_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/prices": {
+            "get": {
+                "tags": [
+                    "备案价表"
+                ],
+                "summary": "备案价表",
+                "operationId": "459385bc59a74dc4b3eab4cd65c45530",
+                "parameters": [
+                    {
+                        "name": "sype_id",
+                        "in": "query",
+                        "description": "楼盘sype_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "fyb_id",
+                        "in": "query",
+                        "description": "楼栋fyb_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/analysis": {
+            "get": {
+                "tags": [
+                    "房源分析"
+                ],
+                "summary": "房源分析",
+                "operationId": "0898dfa1cdea314be23c565f068df6d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/analysis_details": {
+            "get": {
+                "tags": [
+                    "房源详情分析"
+                ],
+                "summary": "房源详情分析",
+                "operationId": "4723f068b603e517f5c704d79ec89204",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/sale": {
+            "get": {
+                "tags": [
+                    "销控图"
+                ],
+                "summary": "销控图",
+                "operationId": "7de531127e61ad92d4366ab468100482",
+                "parameters": [
+                    {
+                        "name": "sype_id",
+                        "in": "query",
+                        "description": "楼盘sype_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/history": {
+            "get": {
+                "tags": [
+                    "历史取证"
+                ],
+                "summary": "历史取证",
+                "operationId": "e6dfd24916fc1d32853611c186be62ae",
+                "parameters": [
+                    {
+                        "name": "sype_id",
+                        "in": "query",
+                        "description": "楼盘sype_id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/album": {
+            "get": {
+                "tags": [
+                    "楼盘相册"
+                ],
+                "summary": "楼盘相册",
+                "operationId": "893fcde1d1e65e136480031e2ce4dcc0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "楼盘id",
+                        "schema": {
+                            "type": "int",
+                            "default": "0"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "类型=[0:总平图,1:规划图,2:效果图,3:户型图]"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/login": {
+            "post": {
+                "tags": [
+                    "登录"
+                ],
+                "summary": "登录",
+                "operationId": "71d103e38941722cb9bb41cfc8771f12",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "code",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/getUnlimited": {
+            "get": {
+                "tags": [
+                    "获取小程序码"
+                ],
+                "summary": "获取小程序码",
+                "operationId": "657b270814359ad9aa8b2463ea5b081e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "scene",
+                        "in": "query",
+                        "description": "scene",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/member": {
+            "get": {
+                "tags": [
+                    "个人信息"
+                ],
+                "summary": "个人信息",
+                "operationId": "1dbf26b825116145bb6b3d89b1dbfba2",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/upload": {
+            "post": {
+                "tags": [
+                    "上传头像"
+                ],
+                "summary": "上传头像",
+                "operationId": "7a12cea206012e469f70598335e56d61",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "头像",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/edit": {
+            "post": {
+                "tags": [
+                    "修改资料"
+                ],
+                "summary": "修改资料",
+                "operationId": "7688b96a88134ed12b25dfca0a127f1a",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "content-type/json": {
+                            "schema": {
+                                "required": [
+                                    "nickname",
+                                    "avatar"
+                                ],
+                                "properties": {
+                                    "nickname": {
+                                        "description": "昵称",
+                                        "type": "string"
+                                    },
+                                    "avatar": {
+                                        "description": "头像",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/bindphone": {
+            "post": {
+                "tags": [
+                    "绑定手机"
+                ],
+                "summary": "绑定手机",
+                "operationId": "77960ef02badd819cc4b122ffe198779",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "code",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/protocol": {
+            "get": {
+                "tags": [
+                    "协议"
+                ],
+                "summary": "协议",
+                "operationId": "ee1953424bb4ba533657ca969144dbd9",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/help": {
+            "get": {
+                "tags": [
+                    "帮助教程"
+                ],
+                "summary": "帮助教程",
+                "operationId": "782eb5db22bb290e3530270a7d2b14c5",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        },
+        "/api/v1.index/privacy": {
+            "get": {
+                "tags": [
+                    "隐私协议"
+                ],
+                "summary": "隐私协议",
+                "operationId": "75942c79752bb8431d729b7191bc368b",
+                "responses": {
+                    "200": {
+                        "description": "The User"
+                    }
+                }
+            }
+        }
+    }
+}

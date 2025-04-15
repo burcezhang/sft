@@ -1,0 +1,21 @@
+<table class="layui-table" id="list" lay-filter="list"
+       data-node-add="{:auth(__u('add'))}"
+       data-node-edit="{:auth(__u('edit'))}"
+       data-node-delete="{:auth(__u('delete'))}"
+       data-node-destroy="{:auth(__u('destroy'))}"
+       data-node-modify="{:auth(__u('modify'))}"
+       data-node-recycle="{:auth(__u('recycle'))}"
+       data-node-restore="{:auth(__u('index'))}"
+       data-node-import="{:auth(__u('import'))}"
+       data-node-export="{:auth(__u('export'))}"
+></table>
+
+<script>var cateIdList = {:json_encode($cateIdList)};
+var openSwitchList = {:json_encode($openSwitchList)};
+var sexdataList = {:json_encode($sexdataList)};
+var statusList = {:json_encode($statusList)};
+var switchList = {:json_encode($switchList)};
+var my2stateList = {:json_encode($my2stateList)};
+var mystateList = {:json_encode($mystateList)};
+var weekList = {:json_encode($weekList)};
+</script>

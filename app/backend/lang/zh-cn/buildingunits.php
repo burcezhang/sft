@@ -1,0 +1,32 @@
+<?php
+
+return [
+'Id'=>'主键',
+'Sellers'=>'卖方信息',
+'BuildingName'=>'楼栋名称',
+'BuildingBranch'=>'分栋信息',
+'Floor'=>'楼层',
+'HouseNb'=>'房号',
+'Usage'=>'用途',
+'YsInsideArea'=>'预售套内面积',
+'YsExpandArea'=>'预售分摊面积',
+'YsBuildingArea'=>'预售建筑面积',
+'JgInsideArea'=>'竣工套内面积',
+'JgExpandArea'=>'竣工分摊面积',
+'JgBuildingArea'=>'竣工建筑面积',
+'AskPriceEachB'=>'单价(元/平方米)',
+'AskPriceTotalB'=>'总价(元)',
+'Color'=>'颜色标识',
+'LastStatusName'=>'最新状态名称',
+'StrContractId'=>'合同编号',
+'PreSellId'=>'预售ID',
+'FybId'=>'房源表ID',
+'YsProjectId'=>'预售项目ID',
+'Status'=>'状态',
+'Status 0'=>'OFF',
+'Status 1'=>'ON',
+'CreateTime'=>'创建时间',
+'UpdateTime'=>'更新时间',
+'DeleteTime'=>'删除时间',
+
+];

@@ -1,0 +1,154 @@
+<link rel="stylesheet" href="/static/wechat/css/material/material.css">
+<meta name="referrer" content="never">
+<div class="layui-tab layui-tab-brief">
+    <ul class="layui-tab-title">
+        <li class="{if(($type && $type=='news' ) || !$type)}layui-this{/if}">图文</li>
+        <li class="{if($type && $type=='image')}layui-this{/if}">图片</li>
+        <li class="{if($type && $type=='video')}layui-this{/if}">视频</li>
+        <li class="{if($type && $type=='voice')}layui-this{/if}">音频</li>
+    </ul>
+    <div class="layui-tab-content" style="padding: 15px;">
+        <div class="layui-tab-item {if(($type && $type=='news' ) || !$type)}layui-show{/if}">
+            <form action="" class="layui-form" lay-filter="form">
+                <div class="media" style="">
+                    <div class="media-left">
+                        {if $formData}
+                        <div class="media-border-title js-action action">
+                            <div style="position: relative;text-align:center;">
+                                <img class="type-img-0" src="{$formData[0]['cover']}" style="max-width:275px;max-height:150px;">
+                                <h5 class="type-title-0" style="position: absolute; bottom: 0; width: 100%; background: #000; opacity:0.5; color: #fff; margin: 0; padding: 5px 0;text-align:left;">{$formData[0]['title']}</h5>
+                            </div>
+                            <div class="actions" style="display: none;"><span class="edit">编辑</span></div>
+                            <span class="editting">编辑中</span>
+                            <input type="hidden" name="hidden0" id="title0" value="{$formData[0]['title']}">
+                            <input type="hidden" name="hidden0" id="author0" value="{$formData[0]['author']}">
+                            <input type="hidden" name="hidden0" id="show_cover0" value="{$formData[0]['show_cover']}">
+                            <input type="hidden" name="hidden0" id="content_source_url0" value="{$formData[0]['content_source_url']}">
+                            <input type="hidden" name="hidden0" id="cover0" value="{$formData[0]['thumb_media_id']}">
+                            <input type="hidden" name="hidden0" id="need_open_comment0" value="{$formData[0]['need_open_comment']}">
+                            <input type="hidden" name="hidden0" id="only_fans_can_comment0" value="{$formData[0]['only_fans_can_comment']}">
+                            <input type="hidden" name="hidden0" id="digest0" value="{$formData[0]['digest']}">
+                            <input type="hidden" name="hidden0" id="content0" value="{$formData[0]['content']}">
+                        </div>
+                        {else /}
+                        <div class="media-border-title js-action action" data-key="0">
+                            <div style="position: relative;text-align:center;">
+                                <img class="type-img-0" src="" style="max-width:275px;max-height:150px;display:none;">
+                                <span class="img-text">封面图片</span>
+                                <h5 class="type-title-0" style="position: absolute; bottom: 0; width: 100%; background: #000; opacity:0.5; color: #fff; margin: 0; padding: 5px 0;text-align:left;">标题</h5>
+                            </div>
+                            <div class="actions" style="display: none;"><span class="edit">编辑</span></div>
+                            <span class="editting">编辑中</span>
+                            <input type="hidden" name="hidden0" id="title0" value="">
+                            <input type="hidden" name="hidden0" id="author0" value="">
+                            <input type="hidden" name="hidden0" id="show_cover0" value="">
+                            <input type="hidden" name="hidden0" id="content_source_url0" value="">
+                            <input type="hidden" name="hidden0" id="cover0" value="">
+                            <input type="hidden" name="hidden0" id="need_open_comment0" value="">
+                            <input type="hidden" name="hidden0" id="only_fans_can_comment0" value="">
+                            <input type="hidden" name="hidden0" id="digest0" value="">
+                            <input type="hidden" name="hidden0" id="content0" value="">
+                        </div>
+                        {/if}
+                        {if count($formData)>1}
+                        {volist name="formData" id='vo' key='k' offset='1'}
+                        <div class="media-body js-action" data-key="{$k}"><p class="type-title-1">{$vo.title}</p>
+                            <div class="media-body-div"><img class="type-img-1" src="{$vo.cover}"  style="max-width:62px;max-height:62px;"></div>
+                            <div class="actions" style="display: none;"><span class="edit">编辑</span></div>
+                            <span class="editting">编辑中</span>
+                            <input type="hidden" name="hidden1" id="title{$k}" value="{$vo.title}">
+                            <input type="hidden" name="hidden1" id="author{$k}" value="{$vo.author}">
+                            <input type="hidden" name="hidden1" id="show_cover{$k}" value="{$vo.show_cover}">
+                            <input type="hidden" name="hidden1" id="content_source_url{$k}" value="{$vo.content_source_url}">
+                            <input type="hidden" name="hidden1" id="cover{$k}" value="{$vo.thumb_media_id}">
+                            <input type="hidden" name="hidden1" id="need_open_comment{$k}" value="{$vo.need_open_comment}">
+                            <input type="hidden" name="hidden1" id="only_fans_can_comment{$k}" value="{$vo.only_fans_can_comment}">
+                            <input type="hidden" name="hidden1" id="digest{$k}" value="{$vo.digest}">
+                            <input type="hidden" name="hidden1" id="content{$k}"  value="{$vo.content}"></div>
+                        {/volist}
+                        {/if}
+                        <div class="media-body">
+                            <span class="media-plus">
+                                <a href="javascript:;"><i class="layui-icon "></i></a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="media-right" id="dir" dir="0" style="">
+                    {:form_input('title','text',['label'=>'标题','verify'=>"required"])}
+                    {:form_input('author','text',['label'=>'作者'])}
+                    {:form_radio('show_cover',['不显示','显示'],['label'=>'是否显示封面','filter'=>'radio'],1)}
+                    {:form_input('content_source_url','text',['label'=>'原文链接'])}
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span style="color:red;"> * </span>封面</label>
+                        <div class="layui-upload-drag" id="coverUpload">
+                            <i class="layui-icon"><img id="coverImage" width="260px" height="126px" alt="" src=""></i>
+                            <input type="hidden" name="cover" id="cover">
+                            <p>点击上传，或将文件拖拽到此处</p>
+                        </div>
+                    </div>
+                    {:form_radio('need_open_comment',['不打开','打开'],['label'=>'打开评论','filter'=>'radio'],1)}
+                    {:form_radio('only_fans_can_comment',['所有人评论','粉丝评论'],['label'=>'粉丝评论','filter'=>'radio'],1)}
+                    {:form_textarea('digest',['label'=>'摘要'])}
+                    {:form_editor('content',2,['filter'=>'sex'])}
+                    <div class="layui-btn-submit layui-form-item layui-btn-center ">
+                        <button type="submit" class="layui-btn layui-btn-sm" id="submit">
+                            {:lang('Submit')}
+                        </button>
+                        <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">{:lang('Reset')}</button>
+                    </div>
+                    {if $formData}
+                    <button type="button" class="layui-btn layui-btn-danger materialDel" data-id="{$formData[0]['material_id']}">删除素材</button>
+                    {/if}
+<!--                    <div class="layui-form-item">-->
+<!--                        <div class="layui-input-block">-->
+<!--                            <button type="button" class="layui-btn" onclick="save();">立即提交</button>-->
+<!--                            {if $formData}-->
+<!--                            <button type="button" class="layui-btn layui-btn-danger" onclick="materialDel(this,{$formData[0]['material_id']})">删除素材</button>-->
+<!--                            {/if}-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item {if($type && $type=='image' )}layui-show{/if}">
+            <label class="layui-form-label">上传图片</label>
+            <div class="layui-upload-drag" id="imageUpload">
+                <i class="layui-icon"></i>
+                <p>点击上传，或将文件拖拽到此处</p>
+            </div>
+        </div>
+        <div class="layui-tab-item {if($type && $type=='video' )}layui-show{/if}">
+            <form action="" class="layui-form">
+                {:form_input('file_name','text',['label'=>'视频标题','reqtext'=>"视频标题,不能为空？"])}
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">视频描述</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="des" lay-verify="required" lay-reqtext="视频描述，不能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <label class="layui-form-label">上传视频</label>
+                <div class="layui-upload-drag" id="videoUpload">
+                    <input type="hidden" class="" name="url" value="" lay-verify="required" lay-reqtext="视频，不能为空？">
+                    <i class="layui-icon">
+                        <video src="" width="400" height="200"></video></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+                <div class="layui-btn-submit layui-form-item layui-btn-center ">
+                    <button type="submit" class="layui-btn layui-btn-sm" id="video">
+                        {:lang('Submit')}
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">{:lang('Reset')}</button>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item {if($type && $type=='voice' )}layui-show{/if}">
+            <label class="layui-form-label">上传音频</label>
+            <div class="layui-upload-drag" id="voiceUpload">
+                <i class="layui-icon"></i>
+                <p>点击上传，或将文件拖拽到此处</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<style>
+    /* 防止下拉框的下拉列表被隐藏---必须设置--- 此样式和表格的样式有冲突 如果表格列数太多 会出现错乱的情况 目前我的解决方法是忽略下拉框的美化渲染 <select lay-ignore> */
+    .layui-table-cell {
+        overflow: visible;
+    }
+
+    .layui-table-box {
+        overflow: visible;
+    }
+    .layui-table-body {
+        overflow: visible;
+    }
+</style>
+
+<table class="layui-table" id="list" lay-filter="list"
+
+       data-node-add="{:auth(__u('add'))}"
+       data-node-edit="{:auth(__u('edit'))}"
+       data-node-delete="{:auth(__u('delete'))}"
+       data-node-destroy="{:auth(__u('destroy'))}"
+       data-node-modify="{:auth(__u('modify'))}"
+       data-node-aysn="{:auth(__u('aysn'))}"
+       data-node-reply="{:auth(__u('reply'))}"
+></table>

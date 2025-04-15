@@ -1,0 +1,10 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('ad_name', 'text', ['label' => 'AdName', 'verify' => 'required'], '')}
+    {:form_upload('image_url',['type'=>'checkbox'],$formData?$formData['image_url']:'')}
+{:Form::input('redirect_url', 'text', ['label' => 'RedirectUrl', 'verify' => ''], '')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+{:Form::input('display_duration', 'number', ['label' => 'DisplayDuration', 'verify' => 'required'], '5')}
+
+    {:Form::submit()}
+</form>
+

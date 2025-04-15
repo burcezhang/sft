@@ -1,0 +1,31 @@
+
+<blockquote class="layui-elem-quote">
+    {if(auth(__u('add')))}
+    <a  data-url="{:__u('add')}"
+       lay-event="open"
+       class="layui-btn layui-btn-sm layui-btn-warm">添加关键词回复</a>
+    {/if}
+</blockquote>
+<div class="layui-tab layui-tab-brief" lay-filter="lemo-brief">
+    <ul class="layui-tab-title">
+        {volist name="typeList" id="vo"}
+        <li {if $vo.type== $type } class="layui-this" {/if}><a href="{$vo.url}">{$vo.item}</a></li>
+        {/volist}
+    </ul>
+    <table class="layui-table" id="list" lay-filter="list"
+       data-node-add="{:auth(__u('add'))}"
+       data-node-edit="{:auth(__u('edit'))}"
+       data-node-delete="{:auth(__u('delete'))}"
+       data-node-destroy="{:auth(__u('destroy'))}"
+       data-node-modify="{:auth(__u('modify'))}"
+       data-node-reply="{:auth(__u('reply'))}"
+></table>
+</div>
+<script>
+    // <a href="{:url('edit')}?id={{d.id}}" class="layui-btn  layui-btn-xs" lay-event="edit">{:lang('edit')}</a>
+    // {{# if(d.type=='keyword') { }}
+    // <a  class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{:lang('del')}</a>
+    // {{# } }}
+    var type="{$type}";
+    var list ={:json_encode($list)};
+</script>

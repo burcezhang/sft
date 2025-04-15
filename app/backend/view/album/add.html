@@ -1,0 +1,10 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::radio('type' ,$typeList, ['label' => 'Type', 'verify' => 'required'], '0')}
+{:Form::upload('thumbs', ['label' => '图片', 'verify' => '', 'type' => 'checkbox', 'mime' => 'images', 'path' => 'Album', 'num' => '1'], $formData?$formData['thumbs']:'', )}
+{:Form::select('sype_id',$propertyInfo,['verify'=>'required','label'=>'小区'] ,'sype_id,project')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+
+
+    {:Form::submit()}
+</form>
+

@@ -1,0 +1,5 @@
+<form class="layui-form" lay-filter="form">
+    {:form_input('name','text',['verify'=>'required','tips'=>'Between 4 and 25 characters.'])}
+    {:form_radio('status',['disabled','enabled'],['filter'=>'status'],1)}
+    {:form_submitbtn()}
+</form>

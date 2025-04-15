@@ -1,0 +1,10 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('user_id', 'text', ['label' => 'UserId', 'verify' => 'required'], '')}
+{:Form::input('property_id', 'text', ['label' => 'PropertyId', 'verify' => 'required'], '')}
+{:Form::date('subscription_time', ['label' => 'SubscriptionTime', 'verify' => ''])}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+{:Form::input('remarks', 'text', ['label' => 'Remarks', 'verify' => ''], '')}
+
+    {:Form::submit()}
+</form>
+

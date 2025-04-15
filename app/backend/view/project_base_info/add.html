@@ -1,0 +1,41 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('project', 'text', ['label' => 'Project', 'verify' => 'required'], '')}
+{:Form::input('parcel_no', 'text', ['label' => 'ParcelNo', 'verify' => 'required'], '')}
+{:Form::input('parcel_code', 'text', ['label' => 'ParcelCode', 'verify' => 'required'], '')}
+{:Form::input('site_address', 'text', ['label' => 'SiteAddress', 'verify' => 'required'], '')}
+{:Form::date('sr_date', ['label' => 'SrDate', 'verify' => '', 'type' => 'date'])}
+{:Form::input('zone', 'text', ['label' => 'Zone', 'verify' => 'required'], '')}
+{:Form::input('contract_type', 'text', ['label' => 'ContractType', 'verify' => ''], '')}
+{:Form::input('approvor', 'text', ['label' => 'Approvor', 'verify' => ''], '')}
+{:Form::input('full_contract_no', 'text', ['label' => 'FullContractNo', 'verify' => ''], '')}
+{:Form::input('lu_term', 'number', ['label' => 'LuTerm', 'verify' => ''], '')}
+{:Form::input('lu_function', 'text', ['label' => 'LuFunction', 'verify' => ''], '')}
+{:Form::input('land_grade', 'text', ['label' => 'LandGrade', 'verify' => ''], '')}
+{:Form::input('basearea', 'number', ['label' => 'Basearea', 'verify' => ''], '')}
+{:Form::input('lu_area', 'number', ['label' => 'LuArea', 'verify' => ''], '')}
+{:Form::input('floor_area', 'number', ['label' => 'FloorArea', 'verify' => ''], '')}
+{:Form::input('total_amount', 'number', ['label' => 'TotalAmount', 'verify' => ''], '')}
+{:Form::input('land_grant_cost', 'number', ['label' => 'LandGrantCost', 'verify' => ''], '')}
+{:Form::input('land_attach_cost', 'number', ['label' => 'LandAttachCost', 'verify' => ''], '')}
+{:Form::input('land_devel_cost', 'number', ['label' => 'LandDevelCost', 'verify' => ''], '')}
+{:Form::input('contract_flag', 'text', ['label' => 'ContractFlag', 'verify' => ''], '')}
+{:Form::input('cert_no', 'text', ['label' => 'CertNo', 'verify' => ''], '')}
+{:Form::input('projectwatcher', 'text', ['label' => 'Projectwatcher', 'verify' => ''], '')}
+{:Form::input('housewatcher', 'text', ['label' => 'Housewatcher', 'verify' => ''], '')}
+{:Form::input('housewatcher_price', 'number', ['label' => 'HousewatcherPrice', 'verify' => ''], '')}
+{:Form::input('selltelephone1', 'text', ['label' => 'Selltelephone1', 'verify' => ''], '')}
+{:Form::input('selltelephone2', 'text', ['label' => 'Selltelephone2', 'verify' => ''], '')}
+{:Form::textarea('remark', ['label' => 'Remark', 'verify' => '',], '')}
+{:Form::input('projectid', 'number', ['label' => 'Projectid', 'verify' => ''], '')}
+{:Form::input('house_useage', 'text', ['label' => 'HouseUseage', 'verify' => ''], '')}
+{:Form::input('ys_suites', 'number', ['label' => 'YsSuites', 'verify' => ''], '')}
+{:Form::input('ys_area', 'number', ['label' => 'YsArea', 'verify' => ''], '')}
+{:Form::input('xs_suites', 'number', ['label' => 'XsSuites', 'verify' => ''], '')}
+{:Form::input('xs_area', 'number', ['label' => 'XsArea', 'verify' => ''], '')}
+{:Form::textarea('landuse_demo', ['label' => 'LanduseDemo', 'verify' => '',], '')}
+{:Form::input('pre_sellId', 'number', ['label' => 'PreSellId', 'verify' => ''], '')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+
+    {:Form::submit()}
+</form>
+

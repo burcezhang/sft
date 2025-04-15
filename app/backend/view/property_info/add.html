@@ -1,0 +1,18 @@
+<form class="layui-form" lay-filter="form">
+    {:Form::input('syp_id', 'text', ['label' => 'SypId', 'verify' => 'required'], '')}
+{:Form::input('sype_id', 'text', ['label' => 'SypeId', 'verify' => 'required'], '')}
+{:Form::upload('image_path', ['label' => 'ImagePath', 'verify' => 'required', 'type' => 'radio', 'mime' => 'file', 'path' =>'PropertyInfo', 'num' => '1'], $formData?$formData['image_path']:'', )}
+{:Form::input('project', 'text', ['label' => 'Project', 'verify' => 'required'], '')}
+{:Form::input('strpreprojectid', 'text', ['label' => 'Strpreprojectid', 'verify' => 'required'], '')}
+{:Form::input('site_address', 'text', ['label' => 'SiteAddress', 'verify' => 'required'], '')}
+{:Form::input('zone', 'text', ['label' => 'Zone', 'verify' => 'required'], '')}
+{:Form::input('proj_useage', 'text', ['label' => 'ProjUseage', 'verify' => 'required'], '')}
+{:Form::input('build_area_str', 'text', ['label' => 'BuildAreaStr', 'verify' => ''], '')}
+{:Form::input('average_price', 'number', ['label' => 'AveragePrice', 'verify' => 'required'], '')}
+{:Form::input('ys_date_str', 'text', ['label' => 'YsDateStr', 'verify' => ''], '')}
+{:Form::input('organ_name', 'text', ['label' => 'OrganName', 'verify' => ''], '')}
+{:Form::radio('status' ,$statusList, ['label' => 'Status', 'verify' => 'required'], '1')}
+
+    {:Form::submit()}
+</form>
+

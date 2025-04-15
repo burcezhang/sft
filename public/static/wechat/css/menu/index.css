@@ -1,0 +1,206 @@
+body{
+    background:#F6F8F9;color:#333;
+}
+
+/*layui默认样式清除*/
+.layui-badge-rim, .layui-colla-content, .layui-colla-item, .layui-collapse, .layui-elem-field, .layui-form-pane .layui-form-item[pane], .layui-form-pane .layui-form-label, .layui-layedit, .layui-layedit-tool, .layui-quote-nm, .layui-select, .layui-tab-bar, .layui-tab-card, .layui-tab-title, .layui-tab-title .layui-this:after, .layui-textarea{
+    border-color:transparent;
+}
+.layui-nav-tree .layui-nav-bar{
+    background:#3b00de;
+}
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after{
+    background:#3b00de;
+}
+.layui-form-radio>i:hover, .layui-form-radioed>i{
+    color:#3b00de;
+}
+.layui-nav .layui-nav-item a{
+    padding:0 25px;
+}
+.layui-nav .layui-nav-child dd.layui-this a, .layui-nav-child dd.layui-this{
+    background:#3b00de;
+}
+
+
+.layui-anim.layui-icon{font-size: 16px;}
+/*滚动条整体部分*/
+::-webkit-scrollbar{
+    width:5px;height:5px;
+}
+/*滚动条两端按钮*/
+::-webkit-scrollbar-button{
+    display:none;
+}
+/*滚动条外层轨道*/
+::-webkit-scrollbar-track{
+    display:none;
+}
+/*滚动条内层轨道*/
+::-webkit-scrollbar-track-piece{
+    /*border-radius:5px;*/
+}
+/*滚动条*/
+::-webkit-scrollbar-thumb{
+    background:#ccc;
+    border-radius:5px;
+}
+
+
+/*右侧主体*/
+.content .con{
+    background:#fff;
+    box-sizing: border-box;
+    padding: 5px 10px;box-shadow: 0 0 5px rgba(0,0,0,.1)
+}
+.layui-wx-msg p{
+    font-size:14px;
+}
+.layui-elem-quote{
+    line-height: unset;display: flex;border-color:#3b00de;
+}
+.layui-elem-quote div{
+    display: block;float: left;
+}
+.layui-elem-quote div:first-child{
+    margin-right:20px;
+}
+.layui-wx-msg .layui-icon-tips{
+    font-size:16px;border-radius: 50px;color:#3b00de;
+}
+
+.content .con .con-body{
+    padding:35px 0;display: flex;position: relative;
+}
+.con-body .left>div{width:300px;height:580px;) top center no-repeat;
+    background-size:100% auto;position:relative;border:1px solid #e7e7eb;box-sizing: border-box;
+}
+.con-body .left .menu-title{
+    position:absolute;top:30px;text-align: center;width:100%;font-size:16px;
+}
+.con-body .left .menu-keybords{
+    position:absolute;bottom:0;width:100%;height:50px;background:#c2c2c2;box-sizing: border-box;background:url('../../images/bg-mobile-keyboard.png') no-repeat;
+    padding-left: 43px;margin-bottom: 0;border-top:1px solid #e7e7eb;
+}
+.con-body .mobile-header {
+    position: relative;
+    background: transparent url(../../images/bg_mobile_head_default.png);
+    background-position: 0px 0px;
+    background-size: 100%;
+    text-align: center;
+    padding-top: 64px;
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(231, 231, 235);
+    border-image: initial;
+}
+.con-body .left .menu-keybords>ul{
+    float: left;height: 100%;width:100%;display:flex;
+}
+.con-body .left .menu-keybords>ul>li{
+    width:100%;height:100%;float:left;border-left:1px solid #e7e7eb;box-sizing: border-box;
+    text-align:center;position: relative;
+
+}
+.con-body .left .menu-keybords li>ul{
+    position: absolute;width:100%;bottom:60px;display:none;z-index:1  ;
+}
+.con-body .left .menu-keybords li>ul.active{
+    display:block;
+}
+.con-body .left .menu-keybords li>ul>li{
+    width:100%;height:50px;line-height:50px;border:1px solid #e7e7eb;box-sizing: border-box;border-bottom:1px solid transparent;
+}
+.con-body .left .menu-keybords li>ul>li:nth-last-child(3){
+    border-bottom:1px solid #e7e7eb;
+}
+.con-body .left .menu-keybords li>span{
+    width:100%;height:100%;display: flex;justify-content: center;align-items: center;
+}
+.con-body .left .menu-keybords .menu-list>ul>li:hover{
+    background: #eee;
+}
+.con-body .left .menu-keybords li>ul:after{
+    bottom: -5px;
+    display: inline-block;
+    content: "";
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+    width: 0;
+    height: 0;
+    border-width: 6px;
+    border-style: dashed;
+    border-color: transparent;
+    border-bottom-width: 0;
+    border-top-style: solid;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 5px solid #fff;
+    border-top-color: #fafafa;
+    z-index:1;
+    border-top-color: rgba(208, 208, 208, 0.38);
+}
+.con-body .left .menu-keybords .active{
+    border:1px solid #3b00de!important;
+}
+.con-body .left .menu-keybords .active>a{
+    color:#3b00de;
+}
+.con-body .left .menu-keybords li{
+    cursor:pointer;
+}
+.con-body .left .menu-keybords .wx-menu-add span{
+    font-size:16px;font-weight:bold;color:#ccc!important;transform: rotate(45deg);
+}
+.con-body .right{
+    box-sizing: border-box;padding:15px 20px;background:#f4f5f9;
+    border: 1px solid #e7e7eb;position: absolute;left:330px;height:580px;right:0;
+}
+.con-body .right>span{
+    display: inline-block;width: 0;height: 0;border-width: 12px;
+    border-style: dashed;border-color: transparent;border-left-width: 0;border-right-color: #e7e7eb;border-right-style: solid;
+    position: absolute;left: -12px;bottom: 15px;
+}
+.con-body .right>.wx-menu-left:nth-last-child(2){
+    left: -10.5px;border-right-color: #f4f5f9;z-index:1;
+}
+.con-body .right .menu-title{
+    padding-bottom:15px;box-sizing:border-box;border-bottom:1px solid #e7e7eb;
+}
+.con-body .right .menu-title a{
+    color:#3b00de;float:right;
+}
+.con-body .right>div{
+    margin-top:35px;
+}
+.con-body .right .layui-input-tips{
+    color:#8d8d8d;padding-top:5px;display: block;
+}
+.con-body .right .layui-form-item .layui-tab .layui-tab-content{
+    background:#fff;border:1px solid #e7e7eb;padding:0;
+}
+.con-body .right .layui-form-item>.layui-input-block>.layui-tab>.layui-tab-content{
+    margin-top:10px;
+}
+.con-body .right .layui-form-item .layui-tab .layui-tab-content .layui-tab{
+    margin:0;
+}
+.con-body .right  .layui-form-item .layui-tab .layui-tab-content .layui-tab .layui-tab-title{
+    background:#f6f8f9;padding:5px 0;
+}
+.con-body .right .layui-form-item .layui-tab .layui-tab-content .layui-tab .layui-tab-title .layui-this{
+    color: #3b00de;
+}
+.layui-form-btn{
+    background: #3b00de;
+}
+.layui-btn-primary:hover{
+    border-color:#3b00de;
+}
+.menu-list span{font-size:14px;}
+.layui-tab-title li{padding:0 2px;margin:0 auto;}
+.layui-tab-title li div{font-size:12px;}
