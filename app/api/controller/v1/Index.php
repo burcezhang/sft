@@ -7,6 +7,7 @@ use app\backend\model\Building;
 use app\backend\model\BuildingUnits;
 use app\backend\model\BuildingUnitsHistory;
 use app\backend\model\Floor;
+use app\backend\model\HouseDeal;
 use app\backend\model\MoneyWatcher;
 use app\backend\model\ProjectBaseInfo;
 use app\backend\model\ProjectBuilding;
@@ -28,7 +29,7 @@ use think\facade\Db;
  */
 class Index extends Api
 {
-    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building'];
+    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building', 'housedeal', 'cyclerate'];
 
     public $appid = '';
     public $appsecret = '';
@@ -188,7 +189,7 @@ class Index extends Api
                 ],
             ],
         ];
-        $this->success('success',  $data);
+        $this->success('success', $data);
     }
 
     // 板块库存
@@ -385,7 +386,7 @@ class Index extends Api
             ->toArray();
 
         // 处理数据
-        $this->success('success',  $this->getIndexData($data));
+        $this->success('success', $this->getIndexData($data));
     }
 
     // 处理首页楼盘数据
@@ -614,7 +615,7 @@ class Index extends Api
         $limit = $this->request->param('limit', 10);
         if (!empty($keywords)) {
             $data = PropertyInfo::where('status', 1)->where('project', 'like', "%$keywords%")->page($page, $limit)->select();
-            $this->success('success',  $this->getIndexData($data));
+            $this->success('success', $this->getIndexData($data));
         } else {
             $data = [];
             $this->success('success', $data);
@@ -662,7 +663,7 @@ class Index extends Api
         $where = [];
         if ($usage == 1) {
             $where[] = ['usage', '=', '住宅'];
-        } else if ($usage == 2) {
+        } elseif ($usage == 2) {
             $where[] = ['usage', '=', '商铺'];
         }
 
@@ -745,7 +746,7 @@ class Index extends Api
         // 是否订阅
         $data['is_subscribe'] = PropertySubscription::where('property_id', $id)->where('user_id', $this->member_id)->count() > 0 ? true : false;
 
-        $this->success('success',  $data);
+        $this->success('success', $data);
     }
 
     // 楼盘订阅
@@ -1009,7 +1010,7 @@ class Index extends Api
 
         // if(!empty($loucheng)){
         //     foreach ($loucheng as $key => &$value) {
-        //         // list 
+        //         // list
         //     }
         // }
 
@@ -1343,42 +1344,42 @@ class Index extends Api
         $price_trend = $data['price_trend'];
         $price_trend_max = 0;
         $price_trend_min = PHP_INT_MAX; // 确保找到真正的最小值
-        
+
         for ($i = count($price_trend) - 1; $i > 0; $i--) {
             $price_trend_max = max($price_trend[$i - 1]['max_price'], $price_trend_max);
             $price_trend_min = min($price_trend[$i - 1]['min_price'], $price_trend_min);
             $price_trend[$i - 1]['price_change'] = round($price_trend[$i - 1]['avg_price'] - $price_trend[$i]['avg_price'], 2);
         }
-        
+
         // 确保最旧数据的 price_change = 0
         $price_trend[count($price_trend) - 1]['price_change'] = 0;
-        
+
         // 避免最小值仍是 PHP_INT_MAX
         if ($price_trend_min === PHP_INT_MAX) {
             $price_trend_min = 0;
         }
-        
+
         // 调整最大最小值
         $price_trend_min = max(0, $price_trend_min - abs($price_trend_min) * 0.5);
         $price_trend_max += abs($price_trend_max) * 0.5;
-        
+
         // 计算步长，确保不会太小
         $range = $price_trend_max - $price_trend_min;
         if ($range < 1) {
             $range = 1; // 防止刻度过小
         }
         $step = round($range / 4, 2); // 计算 5 个刻度，步长保留两位小数
-        
+
         // 生成刻度数组
         $price_trend_ticks = [];
         for ($i = 0; $i < 5; $i++) {
             $price_trend_ticks[] = round($price_trend_min + $i * $step, 2);
         }
-        
+
         $data['price_trend_step'] = $price_trend_ticks;
         $data['price_trend'] = $price_trend;
 
-        
+
 
         $price_total = $data['price_total'];
         $price_total_max = 0;
@@ -1426,8 +1427,8 @@ class Index extends Api
         // $price_trend_max = 0;
         // $price_trend_min = 0;
         // for ($i = count($price_trend) - 1; $i > 0; $i--) {
-        //     $price_trend_max = $price_trend[$i - 1]['max_price'] > $price_trend_max  ? $price_trend[$i - 1]['max_price'] : $price_trend_max; 
-        //     $price_trend_min = $price_trend[$i - 1]['min_price'] > $price_trend_min  ? $price_trend[$i - 1]['min_price'] : $price_trend_min; 
+        //     $price_trend_max = $price_trend[$i - 1]['max_price'] > $price_trend_max  ? $price_trend[$i - 1]['max_price'] : $price_trend_max;
+        //     $price_trend_min = $price_trend[$i - 1]['min_price'] > $price_trend_min  ? $price_trend[$i - 1]['min_price'] : $price_trend_min;
 
         //     // 当前项与上一项的 avg_price 差值
         //     $price_trend[$i - 1]['price_change'] = round($price_trend[$i - 1]['avg_price'] - $price_trend[$i]['avg_price'],2);
@@ -1531,7 +1532,7 @@ class Index extends Api
             $typeData[$album['type']][] = $album;
         }
 
-        $this->success('success',  $typeData);
+        $this->success('success', $typeData);
     }
 
     // 登录
@@ -1668,7 +1669,7 @@ class Index extends Api
             "nbf" => $time,
             "exp" => $expire,      //过期时间时间戳
         );
-        return   JWT::encode($token,  config('api.jwt_key'), 'HS256');
+        return   JWT::encode($token, config('api.jwt_key'), 'HS256');
     }
 
     // 获取个人信息
@@ -1775,7 +1776,7 @@ class Index extends Api
      */
     public function bindphone()
     {
-        // 
+        //
         if (!$this->member_id) {
             $this->error('请先登录');
         }
@@ -1827,7 +1828,7 @@ class Index extends Api
             'title' => '用户协议',
             'content' => Config::where('code', 'site_service')->value('value'),
         ];
-        $this->success('success',  $data);
+        $this->success('success', $data);
     }
 
     // 帮助教程
@@ -1861,5 +1862,147 @@ class Index extends Api
             'content' => Config::where('code', 'site_privacy')->value('value'),
         ];
         $this->success('success', $data);
+    }
+
+
+    /**
+     * @OA\Get(path="/api/v1.index/housedeal",
+     *   tags={"首页成交数据"},
+     *   summary="首页成交数据",
+     *   @OA\Response(response="200", description="The User")
+     * )
+     */
+    public function housedeal()
+    {
+        // 只要信息：全市的住宅 已知数据：成交套数，成交面积，成交均价 套均总价 = (成交均价 × 成交面积) ÷ 成交套数
+        $date = date('Y-m-d', strtotime('-2 day'));
+        $cacheKey = 'home_housedeal_' . $date;
+        $data = cache($cacheKey);
+        if (!$data) {
+            $where = [
+                'reportcatalog' => '住宅',
+                'zone' => '全市',
+                'tj_date' => $date,
+            ];
+            $data = HouseDeal::where($where)->field('tj_date,cj_num,cj_area,cj_avg')->find();
+            if($data){
+                $data['tj_total'] = sprintf("%.2f", $data['cj_avg'] * $data['cj_area'] / $data['cj_num']);
+                cache($cacheKey, json_encode($data), 86400);
+            }else{
+                //暂无数据
+                $data = [
+                    'tj_date' => '',
+                    'cj_num' => 0,
+                    'cj_area' => 0,
+                    'cj_avg' => 0,
+                ];
+            }
+        }else{
+            $data = json_decode($data, true);
+        }
+        $this->success('success', $data);
+    }
+
+    /**
+     * @OA\Get(path="/api/v1.index/cyclerate",
+     *   tags={"新房库存去化率和周期"},
+     *   summary="新房库存去化率和周期",
+     *   @OA\Response(response="200", description="The User")
+     * )
+     */
+    public function cyclerate()
+    {
+        $cycle = $this->cycle();
+        $rate = $this->rate();
+        $this->success('ok', array_merge($cycle, $rate));
+    }
+
+    //获取当月和
+    private function cycle()
+    {
+        //  去化周期=当前可售套数 ÷ （最近30天总成交量 ÷ 30天 ）
+        
+        $date = date('Y-m-d', strtotime('-2 day'));
+        $month = date('Y-m-01');
+        $lastMonthStart = date('Y-m-01', strtotime('first day of previous month'));
+        $lastMonthEnd = date('Y-m-d', strtotime('last day of previous month'));
+        $monthCacheKey = 'home_housedeal_cycle' . $month;
+        $lastCacheKey = 'home_housedeal_cycle' . $lastMonthStart;
+        $where = [
+            'reportcatalog' => '住宅',
+            'zone' => '全市',
+        ];
+        $currentCycle = cache($monthCacheKey);
+        $lastCycle = cache($lastCacheKey);
+        //当月去化周期
+        if (!$currentCycle) {
+
+            $monthTotal = HouseDeal::where($where)
+                ->where("tj_date >= '{$month}' and tj_date <= '{$date}'")
+                ->field('count(id) as count, sum(cj_num) as total_num')
+                ->find();
+
+            $currentData = HouseDeal::where($where)
+                ->where('tj_date', $month)
+                ->field('tj_date,ks_num')
+                ->find();
+            $currentCycle = $monthTotal['total_num'] ? ceil($currentData['ks_num'] / ($monthTotal['total_num'] / $monthTotal['count'])) : 0;
+            cache($monthCacheKey, $currentCycle, 86400 * $monthTotal['count']);
+        }
+        //上月去化周期
+        if (!$lastCycle) {
+
+            $lastMonthTotal = HouseDeal::where($where)
+                ->where("tj_date >= '{$lastMonthStart}' and tj_date <= '{$lastMonthEnd}'")
+                ->field('count(id) as count, sum(cj_num) as total_num')
+                ->find();
+
+            $lastData = HouseDeal::where($where)
+                ->where('tj_date', $lastMonthStart)
+                ->field('tj_date,ks_num')
+                ->find();
+            $lastCycle = $lastMonthTotal['total_num'] ? ceil($lastData['ks_num'] / ($lastMonthTotal['total_num'] / $lastMonthTotal['count'])) : 0;
+            cache($lastCacheKey, $lastCycle, 86400 * $lastMonthTotal['count']);
+        }
+        $res = [
+            'current_cycle' => $currentCycle,
+            'last_cycle' => $lastCycle
+        ];
+        return $res;
+    }
+
+    //获取最近七天新房库存去化率
+    private function rate()
+    {
+        //  去化率 = （最近30天成交总套数÷最近30天可售平均套数）×100%
+        $currentData = date('Y-m-d');
+        $startDate = date('Y-m-d', strtotime('-32 day'));
+        $startEnd = date('Y-m-d', strtotime('-2 day'));
+        $cacheKey = 'home_housedeal_rate' . $currentData;
+        $where = [
+            'reportcatalog' => '住宅',
+            'zone' => '全市',
+        ];
+        $rate = cache($cacheKey);
+        if (!$rate) {
+            $totalData = HouseDeal::where($where)
+                ->where("tj_date >= '{$startDate}' and tj_date <= '{$startEnd}'")
+                ->field('count(id) as count, sum(cj_num) as total_cj_num, sum(ks_num) as total_ks_num')
+                ->find();
+            $currentData = HouseDeal::where($where)
+                ->where('tj_date', $startEnd)
+                ->field('tj_date,ks_area,ks_num')
+                ->find();
+            $rate = sprintf("%.2f", $totalData['total_cj_num'] / ($totalData['total_ks_num'] / $totalData['count']) * 100);
+            $res = [
+                'rate' => $rate,
+                'ks_area' => isset($currentData['ks_area']) ? $currentData['ks_area'] : 0,
+                'ks_num' => isset($currentData['ks_num']) ? $currentData['ks_num'] : 0,
+            ];
+            cache($cacheKey, json_encode($res), 86400);
+        }else{
+            $res = json_decode($rate, true);
+        }
+        return $res;
     }
 }

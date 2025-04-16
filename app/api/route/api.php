@@ -105,6 +105,13 @@ Route::get(':version/house/houseMonth','api/:version.house/houseMonth');
 // 一手商品房按面积统计成交信息
 Route::get(':version/house/houseAreaDay','api/:version.house/houseAreaDay');
 Route::get(':version/house/houseAreaMonth','api/:version.house/houseAreaMonth');
+
+//首页最新成交数据信息
+Route::get(':version/index/housedeal','api/:version.index/housedeal');
+
+//首页最新成交数据信息
+Route::get(':version/index/cyclerate','api/:version.index/cyclerate');
+
 // //
 // ////资源路由，详情查看tp手册资源路由
 // //Route::resource(':version/member','api/:version.member');
