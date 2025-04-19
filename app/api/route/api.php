@@ -115,6 +115,10 @@ Route::get(':version/index/cyclerate','api/:version.index/cyclerate');
 //首页各区住宅成交占比(近30天)
 Route::get(':version/index/distribution','api/:version.index/distribution');
 
+
+//首页市场趋势 12个月
+Route::get(':version/index/markettrends','api/:version.index/markettrends');
+
 // //
 // ////资源路由，详情查看tp手册资源路由
 // //Route::resource(':version/member','api/:version.member');

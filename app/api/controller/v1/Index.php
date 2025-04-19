@@ -8,6 +8,7 @@ use app\backend\model\BuildingUnits;
 use app\backend\model\BuildingUnitsHistory;
 use app\backend\model\Floor;
 use app\backend\model\HouseDeal;
+use app\backend\model\HouseDealArea;
 use app\backend\model\MoneyWatcher;
 use app\backend\model\ProjectBaseInfo;
 use app\backend\model\ProjectBuilding;
@@ -29,7 +30,7 @@ use think\facade\Db;
  */
 class Index extends Api
 {
-    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building', 'housedeal', 'cyclerate', 'distribution'];
+    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building', 'housedeal', 'cyclerate', 'distribution', 'markettrends'];
 
     public $appid = '';
     public $appsecret = '';
@@ -2026,7 +2027,40 @@ class Index extends Api
                 ->select()
                 ->toArray();
             $res = $totalData;
-            // cache($cacheKey, json_encode($res), 86400);
+            cache($cacheKey, json_encode($res), 86400);
+        }else{
+            $res = json_decode($distribution, true);
+        }
+        $this->success('ok', $res);
+    }
+
+
+    //首页市场趋势（12个月）
+    public function markettrends()
+    {
+        //  全市 调用最近12个月数据进行统计 如果没有12个月的数据近改成最近3个月
+        $currentData = date('Y-m-d');
+
+        $startDate = date('Y-m-01', strtotime('-1 year'));
+        $startDate = '2025-04-16';
+        
+        $cacheKey = 'home_housedeal_markettrends' . $currentData;
+        $where = [
+            'zone' => '全市',
+        ];
+        $distribution = cache($cacheKey);
+        if (!$distribution) {
+            $totalData = HouseDealArea::where($where)
+                ->where("tj_date >= '{$startDate}'")
+                ->field('area_type, sum(cj_num) as total_cj_num, sum(cj_area) as total_cj_area, sum(cj_area * cj_avg) as total_cj_price')
+                ->group('area_type')
+                ->select()
+                ->toArray();
+            foreach($totalData as &$val){
+                $val['cj_avg'] = sprintf("%.2f", $val['total_cj_price'] / $val['total_cj_area']);
+            }    
+            $res = $totalData;
+            cache($cacheKey, json_encode($res), 86400);
         }else{
             $res = json_decode($distribution, true);
         }
