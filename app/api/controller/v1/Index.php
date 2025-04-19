@@ -29,7 +29,7 @@ use think\facade\Db;
  */
 class Index extends Api
 {
-    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building', 'housedeal', 'cyclerate'];
+    protected $noAuth = ['splash', 'homedata', 'datacenter', 'stock', 'sales', 'daily', 'dailydetail', 'category', 'getindex', 'search',  'subscribe', 'unsubscribe', 'deeproom', 'deeproomrankings', 'prices', 'sale', 'history', 'album', 'login', 'upload', 'protocol', 'help', 'tutorial', 'explain', 'building', 'housedeal', 'cyclerate', 'distribution'];
 
     public $appid = '';
     public $appsecret = '';
@@ -2004,5 +2004,32 @@ class Index extends Api
             $res = json_decode($rate, true);
         }
         return $res;
+    }
+
+    //获取最近七天新房库存去化率
+    public function distribution()
+    {
+        //  去化率 = （最近30天成交总套数÷最近30天可售平均套数）×100%
+        $currentData = date('Y-m-d');
+        $startDate = date('Y-m-d', strtotime('-32 day'));
+        $startEnd = date('Y-m-d', strtotime('-2 day'));
+        $cacheKey = 'home_housedeal_distribution' . $currentData;
+        $where = [
+            'reportcatalog' => '住宅',
+        ];
+        $distribution = cache($cacheKey);
+        if (!$distribution) {
+            $totalData = HouseDeal::where($where)
+                ->where("tj_date >= '{$startDate}' and tj_date <= '{$startEnd}'")
+                ->field('zone, sum(cj_num) as total_cj_num')
+                ->group('zone')
+                ->select()
+                ->toArray();
+            $res = $totalData;
+            // cache($cacheKey, json_encode($res), 86400);
+        }else{
+            $res = json_decode($distribution, true);
+        }
+        $this->success('ok', $res);
     }
 }
