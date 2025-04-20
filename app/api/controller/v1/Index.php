@@ -2042,7 +2042,6 @@ class Index extends Api
         $currentData = date('Y-m-d');
 
         $startDate = date('Y-m-01', strtotime('-1 year'));
-        $startDate = '2025-04-16';
         
         $cacheKey = 'home_housedeal_markettrends' . $currentData;
         $where = [
