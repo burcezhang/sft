@@ -2021,7 +2021,7 @@ class Index extends Api
         $distribution = cache($cacheKey);
         if (!$distribution) {
             $totalData = HouseDeal::where($where)
-                ->where("tj_date >= '{$startDate}' and tj_date <= '{$startEnd}'")
+                ->where("zone <> '全市' and tj_date >= '{$startDate}' and tj_date <= '{$startEnd}'")
                 ->field('zone as name, sum(cj_num) as value')
                 ->group('zone')
                 ->select()
