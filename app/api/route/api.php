@@ -105,6 +105,7 @@ Route::get(':version/house/houseMonth','api/:version.house/houseMonth');
 // 一手商品房按面积统计成交信息
 Route::get(':version/house/houseAreaDay','api/:version.house/houseAreaDay');
 Route::get(':version/house/houseAreaMonth','api/:version.house/houseAreaMonth');
+Route::get(':version/house/statistics','api/:version.house/statistics');
 
 //首页最新成交数据信息
 Route::get(':version/index/housedeal','api/:version.index/housedeal');
@@ -118,6 +119,20 @@ Route::get(':version/index/distribution','api/:version.index/distribution');
 
 //首页市场趋势 12个月
 Route::get(':version/index/markettrends','api/:version.index/markettrends');
+
+//数据中心
+//销售情况
+Route::get(':version/center/sales','api/:version.center/sales');
+
+//均价趋势
+Route::get(':version/center/avgtrend','api/:version.center/avgtrend');
+//成交价格
+Route::get(':version/center/avgdeal','api/:version.center/avgdeal');
+//均价面积分布
+Route::get(':version/center/avgdistribution','api/:version.center/avgdistribution');
+
+
+
 
 // //
 // ////资源路由，详情查看tp手册资源路由

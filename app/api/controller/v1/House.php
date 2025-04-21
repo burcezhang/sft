@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\backend\model\HouseDeal as HouseDealModel;
 use app\backend\model\HouseDealArea;
+use app\backend\model\HouseDealStatistics;
 use fun\auth\Api;
 
 /**
@@ -57,7 +58,7 @@ class House extends Api
             }
             echo "一手商品房成交信息 全量 -- 共写入" . $res['total'] . "条数据";
             $this->success('ok');
-        }else{
+        } else {
             $this->error($res['errorCode'], [], $res['message']);
         }
     }
@@ -137,7 +138,7 @@ class House extends Api
             }
             echo "一手商品房按面积统计成交信息（按日统计） -- 共写入" . $res['total'] . "条数据";
             $this->success('ok');
-        }else{
+        } else {
             $this->error($res['errorCode'], [], $res['message']);
         }
     }
@@ -175,6 +176,31 @@ class House extends Api
         $end_date = date('Ymd');
         $start_date = date('Ymd', strtotime('-91 day'));
         $this->houseDealAreaSync($start_date, $end_date);
+    }
+
+    //一手商品房成交信息 按月统计 按区分组
+    public function statistics()
+    {
+        echo "一手商品房成交信息 按月统计 按区分组 开始执行";
+        $i = 0;
+        $staData = HouseDealModel::where("reportcatalog = '住宅'")
+            ->field("sum(cj_num) as cj_num,reportcatalog,DATE_FORMAT(tj_date, '%Y-%m-01') as month_year,zone,sum(cj_area * cj_avg) as cj_price, sum(cj_area) as cj_area")
+            ->group("month_year,zone")
+            ->select()
+            ->toArray();
+        foreach ($staData as $val) {
+            $val['cj_avg'] = $val['cj_area'] ? $val['cj_price'] / $val['cj_area'] : 0;
+            $val['tj_date'] = $val['month_year'];
+            $exit = HouseDealStatistics::where(['tj_date' => $val['month_year'], 'zone' => $val['zone'], 'reportcatalog' => '住宅'])
+                ->field('id')
+                ->find();
+            if (!$exit) {
+                unset($val['month_year']);
+               (new HouseDealStatistics())->save($val);
+               $i++;
+            }
+        }
+        echo "一手商品房成交信息 按月统计 按区分组 执行完成 共写入{$i}条数据";
     }
 
     public function getData($url, $data, $header = [])
