@@ -2022,7 +2022,7 @@ class Index extends Api
         if (!$distribution) {
             $totalData = HouseDeal::where($where)
                 ->where("tj_date >= '{$startDate}' and tj_date <= '{$startEnd}'")
-                ->field('zone, sum(cj_num) as total_cj_num')
+                ->field('zone as name, sum(cj_num) as value')
                 ->group('zone')
                 ->select()
                 ->toArray();
