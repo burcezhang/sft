@@ -1918,8 +1918,8 @@ class Index extends Api
         $this->success('ok', array_merge($cycle, $rate));
     }
 
-    //获取当月和
-    private function cycle()
+    //获取当月和上月去化周期
+    protected function cycle()
     {
         //  去化周期=当前可售套数 ÷ （最近30天总成交量 ÷ 30天 ）
         
@@ -1948,7 +1948,9 @@ class Index extends Api
                 ->field('tj_date,ks_num')
                 ->find();
             $currentCycle = $monthTotal['total_num'] ? ceil($currentData['ks_num'] / ($monthTotal['total_num'] / $monthTotal['count'])) : 0;
-            cache($monthCacheKey, $currentCycle, 86400 * $monthTotal['count']);
+            cache($monthCacheKey, json_encode($currentCycle), 86400 * $monthTotal['count']);
+        }else{
+            $lastCycle = json_decode($currentCycle, true);
         }
         //上月去化周期
         if (!$lastCycle) {
@@ -1963,7 +1965,9 @@ class Index extends Api
                 ->field('tj_date,ks_num')
                 ->find();
             $lastCycle = $lastMonthTotal['total_num'] ? ceil($lastData['ks_num'] / ($lastMonthTotal['total_num'] / $lastMonthTotal['count'])) : 0;
-            cache($lastCacheKey, $lastCycle, 86400 * $lastMonthTotal['count']);
+            cache($lastCacheKey, json_encode($lastCycle), 86400 * $lastMonthTotal['count']);
+        }else{
+            $lastCycle = json_decode($lastCycle, true);
         }
         $res = [
             'current_cycle' => $currentCycle,

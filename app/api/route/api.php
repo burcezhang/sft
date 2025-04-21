@@ -130,7 +130,14 @@ Route::get(':version/center/avgtrend','api/:version.center/avgtrend');
 Route::get(':version/center/avgdeal','api/:version.center/avgdeal');
 //均价面积分布
 Route::get(':version/center/avgdistribution','api/:version.center/avgdistribution');
-
+//区域均价数据
+Route::get(':version/center/avgzone','api/:version.center/avgzone');
+//成交量
+Route::get(':version/center/dealnum','api/:version.center/dealnum');
+//成交量 近12个月
+Route::get(':version/center/dealmonth','api/:version.center/dealmonth');
+//各区成交占比 30天
+Route::get(':version/center/dealzone','api/:version.center/dealzone');
 
 
 
