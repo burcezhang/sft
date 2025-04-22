@@ -115,7 +115,7 @@ class Datasync extends Api
                 foreach ($list as $key => $value) {
                     // 查看是否存在
                     $where = ['syp_id' => $value['sypId'], 'sype_id' => $value['sypeId']];
-                    $info = PropertyInfo::where($where)->find()->toArray();
+                    $info = PropertyInfo::where($where)->find();
                     // 驼峰转下划线
                     $data = $this->camelToSnakeAdvanced($value);
                     $data['site_address'] = $value['siteaddress'];
