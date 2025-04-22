@@ -5,6 +5,8 @@ namespace app\api\controller\v1;
 use app\backend\model\HouseDeal;
 use app\backend\model\HouseDealArea;
 use app\backend\model\HouseDealStatistics;
+use app\backend\model\ProjectBaseInfo;
+use app\backend\model\PropertyInfo;
 use fun\auth\Api;
 
 /**
@@ -63,7 +65,7 @@ class Center extends Api
                 'condition' => $this->condition($where, $otherWhere), // 销售情况
                 'dealNum' => $this->zoneCj($where, $otherWhere), // 成交套数 按区分布
                 'area' => $this->area($otherWhere), // 销售面积段分布
-                'supply' => $this->supply($where, $otherWhere), // 供销存
+                'supply' => $this->supply($where, $otherWhere), // 各区供销存数据
             ];
             cache($cacheKey, json_encode($res), 86400);
         } else {
@@ -118,10 +120,31 @@ class Center extends Api
             ->group('zone')
             ->select()
             ->toArray();
+        //获取取证房源数据
+        $propertyData = $this->getPropertyByZone($otherWhere);
         foreach ($totalData as &$val) {
+            $val['qz_num'] = isset($propertyData[$val['zone']]) ? $propertyData[$val['zone']] : 0;
             $val['cycle'] = isset($currentData[$val['zone']]) ? sprintf("%.2f", $currentData[$val['zone']]['ks_num'] / ($val['total_cj_num'] / $val['count'])) : 0;
         }
         return $totalData;
+    }
+
+    private function getPropertyByZone($otherWhere)
+    {
+        $where = [
+            'proj_useage' => '住宅'
+        ];
+        $sypeIds = PropertyInfo::where($where)
+            ->where($otherWhere)
+            ->field('sype_id')
+            ->select()
+            ->toArray();
+        $sypeIds = array_column($sypeIds, 'sype_id');
+        $res = ProjectBaseInfo::whereIn('pre_sellId', $sypeIds)
+            ->field('sum(ys_suites) as ys_suites, zone')
+            ->group('zone')
+            ->column('ys_suites', 'zone');
+        return $res;
     }
 
     //销售面积分布 按面积
@@ -600,13 +623,32 @@ class Center extends Api
                 ->find();
             $res['cj_num'] = $cjData['cj_num'] ? $cjData['cj_num'] : 0;
             // todo取证取数待定
-            $res['qz_num'] = 0;
+            $propertySum = $this->getPropertySum("tj_date >= '{$endDate}'");
+            $res['qz_num'] = $propertySum['ys_suites'] ?? 0;
             cache($cacheKey, json_encode($res), 86400);
         } else {
             $res = json_decode($res, true);
         }
         $this->success('ok', $res);
     }
+
+    private function getPropertySum($otherWhere)
+    {
+        $where = [
+            'proj_useage' => '住宅'
+        ];
+        $sypeIds = PropertyInfo::where($where)
+            ->where($otherWhere)
+            ->field("sype_id")
+            ->select()
+            ->toArray();
+        $sypeIds = array_column($sypeIds, 'sype_id');
+        $res = ProjectBaseInfo::whereIn('pre_sellId', $sypeIds)
+            ->field('sum(ys_suites) as ys_suites')
+            ->find();
+        return $res;
+    }
+
     //新房住宅供销趋势
     public function newtrend()
     {
@@ -614,15 +656,40 @@ class Center extends Api
         $res = cache($cacheKey);
         if (!$res) {
             $res = $this->getDealMont();
+            $endDate = date('Y-m-01', strtotime('+1 month', strtotime('-1 year')));
+            $propertyData = $this->getPropertyByMonth("tj_date >= '{$endDate}'");
             foreach ($res as &$val) {
                 // todo 取证数据待定
-                $val['qz_num'] = 0;
+                $val['qz_num'] = isset($propertyData[$val['year']]) ? $propertyData[$val['year']] : 0;
             }
             cache($cacheKey, json_encode($res), 86400);
         } else {
             $res = json_decode($res, true);
         }
         $this->success('ok', $res);
+    }
+
+    private function getPropertyByMonth($otherWhere)
+    {
+        $where = [
+            'proj_useage' => '住宅'
+        ];
+        $sypeIds = PropertyInfo::where($where)
+            ->where($otherWhere)
+            ->field("DATE_FORMAT(tj_date, '%Y-%m') as year,sype_id")
+            ->select()
+            ->toArray();
+        foreach ($sypeIds as $val) {
+            $map[$val['year']][] = $val['sype_id'];
+        }
+        $res = [];
+        foreach ($map as $mapKey => $mapVal) {
+            $data = ProjectBaseInfo::whereIn('pre_sellId', $mapVal)
+                ->field('sum(ys_suites) as ys_suites')
+                ->find();
+            $res[$mapKey] = $data['ys_suites'] ?? 0;
+        }
+        return $res;
     }
 
     //各区库存分布
