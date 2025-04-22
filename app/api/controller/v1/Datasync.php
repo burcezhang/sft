@@ -119,6 +119,13 @@ class Datasync extends Api
                     // 驼峰转下划线
                     $data = $this->camelToSnakeAdvanced($value);
                     $data['site_address'] = $value['siteaddress'];
+                    if(strpos($data['ys_date_str'], '年')){
+                        $ys_date_str = str_replace('年', '-', $data['ys_date_str']);
+                        $ys_date_str = str_replace('月', '-', $ys_date_str);
+                        $ys_date_str = str_replace('日获批预售', '', $ys_date_str);
+                        $data['ys_date'] = $ys_date_str;
+                    }
+
                     unset($data['siteaddress']);
                     $data['image_path'] = 'https://zjj.sz.gov.cn/szfdcscjy/' . $value['imagePath'];
                     // 图片本地化
