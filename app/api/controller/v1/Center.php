@@ -124,7 +124,11 @@ class Center extends Api
         $propertyData = $this->getPropertyByZone($otherWhere);
         foreach ($totalData as &$val) {
             $val['qz_num'] = isset($propertyData[$val['zone']]) ? $propertyData[$val['zone']] : 0;
-            $val['cycle'] = isset($currentData[$val['zone']]) ? sprintf("%.2f", $currentData[$val['zone']]['ks_num'] / ($val['total_cj_num'] / $val['count'])) : 0;
+            if ($val['count'] == 0 || $val['total_cj_num'] == 0) {
+                $val['cycle'] = 0;
+            } else {
+                $val['cycle'] = isset($currentData[$val['zone']]) ? sprintf("%.2f", $currentData[$val['zone']]['ks_num'] / ($val['total_cj_num'] / $val['count'])) : 0;
+            }
         }
         return $totalData;
     }
