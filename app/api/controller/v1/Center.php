@@ -7,6 +7,7 @@ use app\backend\model\HouseDealArea;
 use app\backend\model\HouseDealStatistics;
 use app\backend\model\ProjectBaseInfo;
 use app\backend\model\PropertyInfo;
+use app\backend\model\PropertyStatistics;
 use fun\auth\Api;
 
 /**
@@ -532,6 +533,7 @@ class Center extends Api
             'zone' => '全市',
         ];
         $day = date('Y-m-d', strtotime('-2 day'));
+        $start = date('Y-01-01');
         $lastDay = date('Y-m-d', strtotime('-3 day'));
         $month = date('Y-m-01');
         $lastMonthStart = date('Y-m-01', strtotime('first day of previous month'));
@@ -557,12 +559,62 @@ class Center extends Api
                 ->find();
             $monthAvg = (float)number_format($monthData['ks_num'] / $monthData['count'], 2);
             $lastMonthAvg = (float)number_format($lastMonthData['ks_num'] / $lastMonthData['count'], 2);
+            $qzData = PropertyStatistics::where("tj_date >= '{$start}'")
+                ->field('sum(qz_num) as qz_num,sum(ys_suites) as ys_suites, sum(cj_num) as cj_num')
+                ->find();
+            $qzNum = isset($qzData['qz_num']) ? $qzData['qz_num'] : 0;
+            $ysSuites = isset($qzData['ys_suites']) ? $qzData['ys_suites'] : 0;
+            $cjNum = isset($qzData['cj_num']) ? $qzData['cj_num'] : 0;
             $res = [
                 'tj_date' => $dayData['tj_date'],
                 'ks_num' => $dayData['ks_num'],
                 'day_diff' => (float)number_format($dayData['ks_num'] - $lastDayData['ks_num'], 2),
                 'month_avg' => $monthAvg,
                 'month_diff' => $monthAvg - $lastMonthAvg,
+                'qz_num' => $qzNum,
+                'ys_suites' => $ysSuites,
+                'cj_num' => $cjNum,
+                'supply_ratio' => $cjNum ? sprintf("%.2f", $ysSuites / $cjNum) : 0,
+            ];
+            cache($cacheKey, json_encode($res), 86400);
+        } else {
+            $res = json_decode($res, true);
+        }
+        $this->success('ok', $res);
+    }
+
+    // 去化周期 近180天
+    /**
+     * @OA\Get(path="/api/v1.center/newcycle",
+     *   tags={"去化周期"},
+     *   summary="去化周期",
+     *   @OA\Parameter(name="id", in="query", description="日报id", @OA\Schema(type="int", default="0")),
+     *   @OA\Response(response="200", description="The User")
+     * )
+     */
+    public function calendar(){
+        $month = input('month', date('Y-m'));
+        $cacheKey = "center_calendar" . $month;
+        $res = cache($cacheKey);
+        if (!$res) {
+            $list = PropertyStatistics::where("tj_date >= '{$month}'")
+                ->field('tj_date, qz_num, ys_suites, house_suites, cj_num')
+                ->select()
+                ->toArray();
+                // `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                // `tj_date` date NOT NULL COMMENT '日期',
+                // `` int(11) NOT NULL COMMENT '取证个数',
+                // `ys_suites` int(11) DEFAULT NULL COMMENT '取证预售套数',
+                // `house_suites` int(11) DEFAULT NULL COMMENT '住宅套数',
+                // `cj_num` int(11) DEFAULT NULL COMMENT '成交套数',
+                // `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
+                // `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+                // `delete_time` int(11) DEFAULT '0' COMMENT '删除时间',
+            $res = [
+                'qz_num' => array_sum(array_column($list, 'qz_num')),
+                'ys_suites' => array_sum(array_column($list, 'ys_suites')),
+                'house_suites' => array_sum(array_column($list, 'house_suites')),
+                'list' => $list,
             ];
             cache($cacheKey, json_encode($res), 86400);
         } else {
@@ -665,7 +717,7 @@ class Center extends Api
             $propertyData = $this->getPropertyByMonth("tj_date >= '{$endDate}'");
             foreach ($res as &$val) {
                 // todo 取证数据待定
-                $val['qz_num'] = isset($propertyData[$val['year']]) ? $propertyData[$val['year']] : 0;
+                $val['qz_num'] = isset($propertyData[$val['name']]) ? $propertyData[$val['name']] : 0;
             }
             cache($cacheKey, json_encode($res), 86400);
         } else {

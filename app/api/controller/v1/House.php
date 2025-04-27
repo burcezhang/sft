@@ -5,6 +5,9 @@ namespace app\api\controller\v1;
 use app\backend\model\HouseDeal as HouseDealModel;
 use app\backend\model\HouseDealArea;
 use app\backend\model\HouseDealStatistics;
+use app\backend\model\PropertyInfo;
+use app\backend\model\ProjectBaseInfo;
+use app\backend\model\PropertyStatistics;
 use fun\auth\Api;
 
 /**
@@ -196,11 +199,95 @@ class House extends Api
                 ->find();
             if (!$exit) {
                 unset($val['month_year']);
-               (new HouseDealStatistics())->save($val);
-               $i++;
+                (new HouseDealStatistics())->save($val);
+                $i++;
             }
         }
         echo "一手商品房成交信息 按月统计 按区分组 执行完成 共写入{$i}条数据";
+    }
+
+    //取证数据统计
+    public function propertyStatistics()
+    {
+        try {
+            $tj_date = input('date', date('Y-m-d', strtotime('-10 day')));
+            $deal = HouseDealModel::where("tj_date >= '{$tj_date}' and zone = '全市'")
+                ->where("reportcatalog = '住宅'")
+                ->field('tj_date, cj_num')
+                ->select()
+                ->toArray();
+
+            $propertyInfo = PropertyInfo::where("tj_date >= '{$tj_date}' and proj_useage = '住宅'")
+                ->field('sype_id, tj_date')
+                ->select()
+                ->toArray();
+
+            $qzNum = PropertyInfo::where("tj_date >= '{$tj_date}' and proj_useage = '住宅'")
+                ->field('count(id) as count, tj_date')
+                ->group('tj_date')
+                ->select()
+                ->toArray();
+            $qzNum = array_column($qzNum, 'count', 'tj_date');
+
+            $sypeIds = array_column($propertyInfo, 'sype_id');
+            $projectBaseInfo = ProjectBaseInfo::where('pre_sellId', 'in', $sypeIds)
+                ->field('sum(ys_suites) as ys_suites,pre_sellId')
+                ->group('pre_sellId')
+                ->select()
+                ->toArray();
+            $proNum = array_column($projectBaseInfo, 'ys_suites', 'pre_sellId');
+            $ysSuites = [];
+            foreach ($propertyInfo as $val) {
+                if (isset($ysSuites[$val['tj_date']])) {
+                    $ysSuites[$val['tj_date']] += isset($proNum[$val['sype_id']]) ? $proNum[$val['sype_id']] : 0;
+                } else {
+                    $ysSuites[$val['tj_date']] = isset($proNum[$val['sype_id']]) ? $proNum[$val['sype_id']] : 0;
+                }
+
+            }
+            foreach ($deal as $val) {
+                $saveData = [
+                    'tj_date' => $val['tj_date'],
+                    'cj_num' => $val['cj_num'],
+                    'qz_num' => isset($qzNum[$val['tj_date']]) ? $qzNum[$val['tj_date']] : 0,
+                    'ys_suites' => isset($ysSuites[$val['tj_date']]) ? $ysSuites[$val['tj_date']] : 0,
+                    'house_suites' => isset($ysSuites[$val['tj_date']]) ? $ysSuites[$val['tj_date']] : 0,
+                ];
+                $exit = (new PropertyStatistics())->where(['tj_date' => $val['tj_date']])
+                    ->field('id')
+                    ->find();
+                if ($exit) {
+                    (new PropertyStatistics())->save($saveData, ['tj_date' => $val['tj_date']]);
+                } else {
+                    (new PropertyStatistics())->save($saveData);
+                }
+            }
+            echo "房源信息统计 按日 '{$tj_date}' 后的数据统计完成";
+        } catch (\Throwable $th) {
+            echo "{$th->getMessage()}";
+        }
+    }
+
+
+    public function propertyInfo()
+    {
+        // todo
+        $startDate = '2025-01-01';
+        $houses = PropertyInfo::where('status', 1)
+            ->where("tj_date >= '{$startDate}'")
+            ->field('sype_id')
+            ->select()
+            ->toArray();
+        foreach ($houses as $house) {
+            sleep(1);
+            try {
+                $app = \think\App::getInstance();
+                $datasync = new \app\api\controller\v1\Datasync($app);
+                $res = $datasync->getSuiteInformation($house['sype_id']);
+            } catch (\Throwable $th) {
+                var_dump($th->getMessage());
+            }
+        }
     }
 
     public function getData($url, $data, $header = [])
