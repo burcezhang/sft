@@ -169,8 +169,9 @@ class Center extends Api
     {
         $res = HouseDeal::where($where)
             ->where($otherWhere)
-            ->field('zone, sum(cj_num) as total_cj_num')
-            ->group('zone')
+            ->where("zone <> '全市'")
+            ->field('zone as name, sum(cj_num) as value')
+            ->group('name')
             ->select()
             ->toArray();
         return $res;

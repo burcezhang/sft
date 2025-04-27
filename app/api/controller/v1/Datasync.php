@@ -123,7 +123,7 @@ class Datasync extends Api
                         $ys_date_str = str_replace('年', '-', $data['ys_date_str']);
                         $ys_date_str = str_replace('月', '-', $ys_date_str);
                         $ys_date_str = str_replace('日获批预售', '', $ys_date_str);
-                        $data['ys_date'] = $ys_date_str;
+                        $data['tj_date'] = $ys_date_str;
                     }
 
                     unset($data['siteaddress']);
