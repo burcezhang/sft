@@ -468,7 +468,7 @@ class Center extends Api
         if (!$res) {
             $res = HouseDeal::where($where)
                 ->where("zone <> '全市' and tj_date >= '{$startDate}'")
-                ->field('name,sum(cj_num) as value')
+                ->field('zone as name,sum(cj_num) as value')
                 ->group('name')
                 ->select()
                 ->toArray();
