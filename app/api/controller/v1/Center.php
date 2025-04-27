@@ -436,8 +436,8 @@ class Center extends Api
         if (!$res) {
             $res = HouseDeal::where($where)
                 ->where("tj_date >= '{$endDate}'")
-                ->field("DATE_FORMAT(tj_date, '%Y-%m') as year,sum(cj_num) as cj_num")
-                ->group('year')
+                ->field("DATE_FORMAT(tj_date, '%Y-%m') as name,sum(cj_num) as value")
+                ->group('name')
                 ->select()
                 ->toArray();
             cache($cacheKey, json_encode($res), 86400);
@@ -468,8 +468,8 @@ class Center extends Api
         if (!$res) {
             $res = HouseDeal::where($where)
                 ->where("zone <> '全市' and tj_date >= '{$startDate}'")
-                ->field('zone,sum(cj_num) as cj_num')
-                ->group('zone')
+                ->field('name,sum(cj_num) as value')
+                ->group('name')
                 ->select()
                 ->toArray();
             cache($cacheKey, json_encode($res), 86400);
