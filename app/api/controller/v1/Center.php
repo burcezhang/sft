@@ -645,12 +645,21 @@ class Center extends Api
         if (!$res) {
             $res = HouseDeal::where($where)
                 ->where("tj_date >= '{$day}'")
-                ->field('tj_date, ks_num, cj_num')
+                ->field("DATE_FORMAT(tj_date, '%Y-%m') as month,count(id) as count,sum(cj_num) as cj_num")
+                ->group('month')
                 ->select()
                 ->toArray();
+            $lastData = HouseDeal::where($where)
+                ->where("tj_date >= '{$day}'")
+                ->field('ks_num,tj_date')
+                ->order('tj_date', 'desc')
+                ->find();
+                // var_dump(HouseDeal::getLastSql());
             foreach ($res as &$val) {
-                $cycle = $val['cj_num'] ? (float)number_format($val['ks_num'] / $val['cj_num'], 2) : 0;
+                $totalDays = date('t', strtotime($val['month'])); 
+                $cycle = $val['cj_num'] ? (float)number_format($lastData['ks_num'] / ($val['cj_num'] / $totalDays), 2) : 0;
                 $val['cycle'] = $cycle;
+                $val['ks_num'] = $lastData['ks_num'];
             }
             cache($cacheKey, json_encode($res), 86400);
         } else {
