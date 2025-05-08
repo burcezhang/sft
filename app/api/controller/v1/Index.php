@@ -750,6 +750,60 @@ class Index extends Api
         $this->success('success', $data);
     }
 
+    /**
+     * @OA\Post(path="/api/v1.index/detailsDeal",
+     *   tags={"楼盘成交"},
+     *   summary="楼盘成交",
+     *   @OA\Parameter(name="sype_id", in="query", description="楼盘sype_id", @OA\Schema(type="int", default="0")),
+     *   @OA\Parameter(name="usage", in="query", description="usage（0全部1住宅2商铺）", @OA\Schema(type="int", default="0")),
+     *   @OA\Response(response="200", description="The User")
+     * )
+     */
+    public function detailsDeal()
+    {
+        if (!$this->member_id) {
+            $this->error('请先登录');
+        }
+        $id = $this->request->param('sype_id');
+        //当前总库存
+        $house_ds = BuildingUnits::where('pre_sellId', $id)->where('last_status_name', '期房待售')->where('status', 1)->count();
+        
+        $dayList = BuildingUnits::where('pre_sellId', $id)
+            ->whereIn('last_status_name', ['已签认购书', '已签合同', '已备案'])
+            ->where('status', 1)
+            ->field("DATE_FORMAT(FROM_UNIXTIME(create_time), '%Y-%m-%d') as date,sum(1) as total_num, sum(CASE when 'usage' = '住宅' then 1 else 0 end) as zz_num")
+            ->order('date', 'desc')
+            ->limit(30)
+            ->select()
+            ->toArray();
+        foreach($dayList as &$v){
+            $v['sy_num'] = $house_ds - (isset($diff) ? $diff : 0);
+            $diff = $v['total_num'];
+            $house_ds -= $diff;
+        }
+        $propertyInfo = PropertyInfo::where('status', 1)->where('sype_id', $id)->field("DATE_FORMAT(tj_date, '%Y-%m') as month_year")->find();
+        $projectBaseInfo = ProjectBaseInfo::where('pre_sellId', $propertyInfo['sype_id'])->find();
+        $monthList = BuildingUnits::where('pre_sellId', $id)
+            ->whereIn('last_status_name', ['已签认购书', '已签合同', '已备案'])
+            ->where('status', 1)
+            ->field("DATE_FORMAT(FROM_UNIXTIME(create_time), '%Y-%m') as date,sum(1) as total_num, sum(CASE when 'usage' = '住宅' then 1 else 0 end) as zz_num")
+            ->limit(12)
+            ->select()
+            ->toArray();
+        foreach($monthList as &$val){
+            if($val['date'] == $propertyInfo['month_year']){
+                $val['qz_num'] = $projectBaseInfo['ys_suites'] ?? 0;
+            }else{
+                $val['qz_num'] = 0;
+            }
+        }
+        $res = [
+            'dayList' => $dayList,
+            'monthList' => $monthList,
+        ];
+        $this->success('success', $res);
+    }
+
     // 楼盘订阅
     /**
      * @OA\Post(path="/api/v1.index/subscribe",
@@ -1886,10 +1940,10 @@ class Index extends Api
                 'tj_date' => $date,
             ];
             $data = HouseDeal::where($where)->field('tj_date,cj_num,cj_area,cj_avg')->find();
-            if($data){
+            if ($data) {
                 $data['tj_total'] = sprintf("%.2f", $data['cj_avg'] * $data['cj_area'] / $data['cj_num']);
                 cache($cacheKey, json_encode($data), 86400);
-            }else{
+            } else {
                 //暂无数据
                 $data = [
                     'tj_date' => '',
@@ -1898,7 +1952,7 @@ class Index extends Api
                     'cj_avg' => 0,
                 ];
             }
-        }else{
+        } else {
             $data = json_decode($data, true);
         }
         $this->success('success', $data);
@@ -1922,7 +1976,7 @@ class Index extends Api
     protected function cycle()
     {
         //  去化周期=当前可售套数 ÷ （最近30天总成交量 ÷ 30天 ）
-        
+
         $date = date('Y-m-d', strtotime('-2 day'));
         $month = date('Y-m-01');
         $lastMonthStart = date('Y-m-01', strtotime('first day of previous month'));
@@ -1949,7 +2003,7 @@ class Index extends Api
                 ->find();
             $currentCycle = $monthTotal['total_num'] ? ceil($currentData['ks_num'] / ($monthTotal['total_num'] / $monthTotal['count'])) : 0;
             cache($monthCacheKey, json_encode($currentCycle), 86400 * $monthTotal['count']);
-        }else{
+        } else {
             $lastCycle = json_decode($currentCycle, true);
         }
         //上月去化周期
@@ -1966,7 +2020,7 @@ class Index extends Api
                 ->find();
             $lastCycle = $lastMonthTotal['total_num'] ? ceil($lastData['ks_num'] / ($lastMonthTotal['total_num'] / $lastMonthTotal['count'])) : 0;
             cache($lastCacheKey, json_encode($lastCycle), 86400 * $lastMonthTotal['count']);
-        }else{
+        } else {
             $lastCycle = json_decode($lastCycle, true);
         }
         $res = [
@@ -2005,7 +2059,7 @@ class Index extends Api
                 'ks_num' => isset($currentData['ks_num']) ? $currentData['ks_num'] : 0,
             ];
             cache($cacheKey, json_encode($res), 86400);
-        }else{
+        } else {
             $res = json_decode($rate, true);
         }
         return $res;
@@ -2032,7 +2086,7 @@ class Index extends Api
                 ->toArray();
             $res = $totalData;
             cache($cacheKey, json_encode($res), 86400);
-        }else{
+        } else {
             $res = json_decode($distribution, true);
         }
         $this->success('ok', $res);
@@ -2046,7 +2100,7 @@ class Index extends Api
         $currentData = date('Y-m-d');
 
         $startDate = date('Y-m-01', strtotime('-1 year'));
-        
+
         $cacheKey = 'home_housedeal_markettrends' . $currentData;
         $where = [
             'zone' => '全市',
@@ -2059,12 +2113,12 @@ class Index extends Api
                 ->group('area_type')
                 ->select()
                 ->toArray();
-            foreach($totalData as &$val){
+            foreach ($totalData as &$val) {
                 $val['cj_avg'] = sprintf("%.2f", $val['total_cj_price'] / $val['total_cj_area']);
-            }    
+            }
             $res = $totalData;
             cache($cacheKey, json_encode($res), 86400);
-        }else{
+        } else {
             $res = json_decode($distribution, true);
         }
         $this->success('ok', $res);
