@@ -187,7 +187,7 @@ class Center extends Api
             ->field('sum(cj_num) as total_cj_num,sum(cj_area * cj_avg) as total_cj_price,sum(cj_area) as total_cj_area')
             ->find();
         $res = [
-            'cj_num' => $data['total_cj_num'],
+            'cj_num' => $data['total_cj_num'] ?? 0,
             'cj_avg' => $data['total_cj_area'] ? sprintf("%.2f", $data['total_cj_price'] / $data['total_cj_area']) : 0,
             'cj_area_avg' => $data['total_cj_num'] ? sprintf("%.2f", $data['total_cj_area'] / $data['total_cj_num']) : 0,
         ];
@@ -542,9 +542,13 @@ class Center extends Api
         $res = cache($cacheKey);
         if (!$res) {
             $dayData = HouseDeal::where($where)
-                ->where("tj_date = '{$day}'")
+                ->where("tj_date <= '{$day}'")
                 ->field('tj_date,ks_num')
-                ->find();
+                ->order('tj_date', 'desc')
+                ->limit(1)
+                ->select()
+                ->toArray();
+            $dayData = $dayData[0];
             $lastDayData = HouseDeal::where($where)
                 ->where("tj_date = '{$lastDay}'")
                 ->field('tj_date,ks_num')
@@ -566,8 +570,8 @@ class Center extends Api
             $ysSuites = isset($qzData['ys_suites']) ? $qzData['ys_suites'] : 0;
             $cjNum = isset($qzData['cj_num']) ? $qzData['cj_num'] : 0;
             $res = [
-                'tj_date' => $dayData['tj_date'],
-                'ks_num' => $dayData['ks_num'],
+                'tj_date' => $dayData['tj_date'] ?? $day,
+                'ks_num' => $dayData['ks_num'] ?? 0,
                 'day_diff' => (float)number_format($dayData['ks_num'] - $lastDayData['ks_num'], 2),
                 'month_avg' => $monthAvg,
                 'month_diff' => $monthAvg - $lastMonthAvg,
@@ -585,7 +589,7 @@ class Center extends Api
 
     // 去化周期 近180天
     /**
-     * @OA\Get(path="/api/v1.center/newcycle",
+     * @OA\Get(path="/api/v1.center/calendar",
      *   tags={"去化周期"},
      *   summary="去化周期",
      *   @OA\Parameter(name="id", in="query", description="日报id", @OA\Schema(type="int", default="0")),
@@ -645,8 +649,8 @@ class Center extends Api
         if (!$res) {
             $res = HouseDeal::where($where)
                 ->where("tj_date >= '{$day}'")
-                ->field("DATE_FORMAT(tj_date, '%Y-%m') as month,count(id) as count,sum(cj_num) as cj_num")
-                ->group('month')
+                ->field("DATE_FORMAT(tj_date, '%Y-%m') as name,count(id) as count,sum(cj_num) as cj_num")
+                ->group('name')
                 ->select()
                 ->toArray();
             $lastData = HouseDeal::where($where)
@@ -656,9 +660,9 @@ class Center extends Api
                 ->find();
                 // var_dump(HouseDeal::getLastSql());
             foreach ($res as &$val) {
-                $totalDays = date('t', strtotime($val['month'])); 
+                $totalDays = date('t', strtotime($val['name'])); 
                 $cycle = $val['cj_num'] ? (float)number_format($lastData['ks_num'] / ($val['cj_num'] / $totalDays), 2) : 0;
-                $val['cycle'] = $cycle;
+                $val['value'] = $cycle;
                 $val['ks_num'] = $lastData['ks_num'];
             }
             cache($cacheKey, json_encode($res), 86400);
@@ -679,14 +683,18 @@ class Center extends Api
         $cacheKey = "center_new_supply" . date('Y-m-d');
         $res = cache($cacheKey);
         if (!$res) {
-            $res = HouseDeal::where($where)
-                ->where("tj_date = '{$day}'")
+            $ksData = HouseDeal::where($where)
+                ->where("tj_date <= '{$day}'")
                 ->field('tj_date, ks_num')
-                ->find();
+                ->order('tj_date', 'desc')
+                ->limit(1)
+                ->select()
+                ->toArray();
             $cjData = HouseDeal::where($where)
                 ->where("tj_date >= '{$endDate}'")
                 ->field('sum(cj_num) as cj_num')
                 ->find();
+            $res['ks_num'] = $ksData[0]['ks_num'];
             $res['cj_num'] = $cjData['cj_num'] ? $cjData['cj_num'] : 0;
             // todo取证取数待定
             $propertySum = $this->getPropertySum("tj_date >= '{$endDate}'");
@@ -767,9 +775,10 @@ class Center extends Api
             $date = date('Y-m-d', strtotime('-2 day'));
             $currentWhere['tj_date'] = $date;
             $currentWhere['reportcatalog'] = '住宅';
-            $res = HouseDeal::where($currentWhere)
+            $res = HouseDeal::where('reportcatalog', '=', '住宅')
+                ->where('tj_date', '<=', $date)
                 ->field('tj_date,zone,cj_num,ks_num')
-                ->group('zone')
+                ->limit(12)
                 ->select()
                 ->toArray();
             cache($cacheKey, json_encode($res), 86400);

@@ -69,7 +69,7 @@ class House extends Api
     public function houseDay()
     {
         $end_date = date('Ymd');
-        $start_date = date('Ymd', strtotime('-1 day'));
+        $start_date = date('Ymd', strtotime('-4 day'));
         $this->houseDealSync($start_date, $end_date);
     }
 
