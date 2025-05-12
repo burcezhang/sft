@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\backend\model\Album;
 use app\backend\model\Building;
+use app\backend\model\BuildingDeal;
 use app\backend\model\BuildingUnits;
 use app\backend\model\BuildingUnitsHistory;
 use app\backend\model\Floor;
@@ -676,19 +677,38 @@ class Index extends Api
         // var_dump($house_ds,$house_yqrgs,$house_yqht);exit;
 
         $deal_data = [];
-        $total = 0;
-        for ($i = 0; $i < 15; $i++) {
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $lastData = BuildingDeal::where('tj_date', '=', $yesterday)
+            ->where('pre_sellId', $id)
+            ->find();
+        if ($lastData) {
+            $deal_data = BuildingDeal::where('tj_date', '<=', $yesterday)
+                ->where('pre_sellId', $id)
+                ->limit(7)
+                ->order('tj_date', 'desc')
+                ->select()
+                ->toArray();
+        }else{
             $day = BuildingUnits::where('pre_sellId', $propertyInfo['sype_id'])
-                ->whereIn('last_status_name', ['已签认购书', '已签合同', '已备案'])
+                ->whereIn('last_status_name', ['已签认购书', '已签合同', '已备案', '期房待售', '自动锁定'])
                 ->where($where)
                 ->where('status', 1)
-                ->where('create_time', '=', strtotime("-$i day"))->count();
-            $total += $day;
-            $deal_data[] = [
-                'name' => date('d', strtotime("-" . $i . " day")),
-                'day' => $day,
-                'total' => $total,
+                ->field('count(id) as count, last_status_name')
+                ->group('last_status_name')
+                ->select()
+                ->toArray();
+            $day = array_column($day, 'count', 'last_status_name');
+            $saveData = [
+                'pre_sellId' => $id,
+                'tj_date' => $yesterday,
+                'qfds' => $day['期房待售'] ?? 0,
+                'yqht' => $day['已签合同'] ?? 0,
+                'yqrgs' => $day['已签认购书'] ?? 0,
+                'yba' => $day['已备案'] ?? 0,
+                'sd' => $day['自动锁定'] ?? 0,
             ];
+            $deal_data[] = $saveData;
+            (new BuildingDeal)->save($saveData);
         }
         $is_store_show = BuildingUnits::where('pre_sellId', $propertyInfo['sype_id'])->where('usage', '商铺')->where('status', 1)->count() > 0 ? 1 : 0;
         $data = [
@@ -767,7 +787,7 @@ class Index extends Api
         $id = $this->request->param('sype_id');
         //当前总库存
         $house_ds = BuildingUnits::where('pre_sellId', $id)->where('last_status_name', '期房待售')->where('status', 1)->count();
-        
+
         $dayList = BuildingUnits::where('pre_sellId', $id)
             ->whereIn('last_status_name', ['已签认购书', '已签合同', '已备案'])
             ->where('status', 1)
@@ -776,7 +796,7 @@ class Index extends Api
             ->limit(30)
             ->select()
             ->toArray();
-        foreach($dayList as &$v){
+        foreach ($dayList as &$v) {
             $v['sy_num'] = $house_ds - (isset($diff) ? $diff : 0);
             $diff = $v['total_num'];
             $house_ds -= $diff;
@@ -790,10 +810,10 @@ class Index extends Api
             ->limit(12)
             ->select()
             ->toArray();
-        foreach($monthList as &$val){
-            if($val['date'] == $propertyInfo['month_year']){
+        foreach ($monthList as &$val) {
+            if ($val['date'] == $propertyInfo['month_year']) {
                 $val['qz_num'] = $projectBaseInfo['ys_suites'] ?? 0;
-            }else{
+            } else {
                 $val['qz_num'] = 0;
             }
         }
