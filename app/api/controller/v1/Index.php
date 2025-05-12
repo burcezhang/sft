@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 use app\backend\model\Album;
 use app\backend\model\Building;
 use app\backend\model\BuildingDeal;
+use app\backend\model\BuildingLine;
 use app\backend\model\BuildingUnits;
 use app\backend\model\BuildingUnitsHistory;
 use app\backend\model\Floor;
@@ -770,6 +771,29 @@ class Index extends Api
         $this->success('success', $data);
     }
 
+
+    /**
+     * @OA\Post(path="/api/v1.index/line",
+     *   tags={"楼盘主页-交通"},
+     *   summary="楼盘主页-交通",
+     *   @OA\Parameter(name="sype_id", in="query", description="楼盘sype_id", @OA\Schema(type="int", default="0")),
+     *   @OA\Parameter(name="usage", in="query", description="usage（0全部1住宅2商铺）", @OA\Schema(type="int", default="0")),
+     *   @OA\Response(response="200", description="The User")
+     * )
+     */
+    public function line()
+    {
+        if (!$this->member_id) {
+            $this->error('请先登录');
+        }
+        $id = $this->request->param('sype_id');
+        $type = $this->request->param('type', 1);
+        $list = (new BuildingLine())->where('pre_sellId', $id)
+            ->where('type', $type)
+            ->select()
+            ->toArray();
+        $this->success('success', $list);
+    }
     /**
      * @OA\Post(path="/api/v1.index/detailsDeal",
      *   tags={"楼盘成交"},
